@@ -1,13 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+
+/* Custom styles for slider arrows */
+.slick-prev, .slick-next {
+  width: 80px; /* Increase the width */
+  height: 80px; /* Increase the height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7); /* Adjust background color if needed */
+  color: rgb(0, 0, 0); /* Arrow color */
+  border-radius: 50%;
+  font-size: 80px; /* Increase font size for the arrow icon */
+  z-index: 10; /* Ensure arrows are on top */
+  top: 50%; /* Vertically center the arrows */
+  transform: translateY(-50%); /* Adjust vertical alignment */
+}
+
+.slick-prev {
+  margin-right: 40px; /* Position the previous arrow on the left */
+}
+
+.slick-next {
+  right: 10px; /* Position the next arrow on the right */
+}
+
+/* Hide slick carousel arrows */
+.slick-prev,
+.slick-next {
+  display: none !important; /* Hide arrows */
 }
