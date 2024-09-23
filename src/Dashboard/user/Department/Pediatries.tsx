@@ -23,14 +23,14 @@ const Pediatries: React.FC = () => {
     <div className="relative flex flex-col h-screen">
       <PatientNavbar />
       <h1 className="text-3xl font-bold mt-6 text-purple-900 ml-20">Pediatrics</h1>
-      <div className="flex mt-4">
+      <div className="flex flex-col md:flex-row mt-4">
         {/* Left Side - Department Card */}
-        <div className="w-1/3 p-4 ml-12">
+        <div className="w-full md:w-1/3 p-4 hidden md:block">
           <DepartmentCard departments={departments} />
         </div>
 
         {/* Right Side - Pediatrics Content */}
-        <div className="w-2/3 p-6 bg-white text-gray-800">
+        <div className="w-full md:w-2/3 p-6 bg-white text-gray-800">
           <div className="flex justify-center mb-6">
             <img
               src={Image}
@@ -41,7 +41,7 @@ const Pediatries: React.FC = () => {
 
           {/* Content for Pediatrics */}
           <div className="mt-6">
-            <h2 className="text-2xl font-semibold mb-4">Paediatric</h2>
+            <h2 className="text-2xl font-semibold mb-4">Pediatrics</h2>
             <p>
               The Department of Pediatric and Neonatology offers state-of-the-art patient care in various pediatric specialties right from birth to adolescence. It combines the latest health facilities, utmost hygiene standards, and eminent experts with years of experience and expertise. The best feature is their warm and pleasant behavior, a key factor in treating children.
             </p>

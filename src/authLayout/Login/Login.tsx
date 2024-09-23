@@ -31,7 +31,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/home');
+      navigate('/admin/home-page');
     }
   }, [isAuthenticated, navigate]);
 
@@ -47,20 +47,20 @@ const Login: React.FC = () => {
     <div className="fixed inset-0 bg-purple-200">
       {/* Main content */}
       <div className="flex flex-col lg:flex-row h-full">
-        {/* Left side for the image, visible on larger screens */}
+        {/* Left side for the image, hidden on smaller screens */}
         <div className="hidden lg:flex flex-none w-2/4 h-full bg-no-repeat bg-cover ml-24" style={{ backgroundImage: `url(${Image})`, backgroundPosition: 'left', backgroundSize: 'contain' }}>
         </div>
 
         {/* Right side for the login form */}
-        <div className="flex-grow flex items-center justify-center lg:justify-end p-10 mt-10 mr-28">
-          <div className="max-w-md w-full p-8 border border-purple-300 rounded-md shadow-md bg-white/20 backdrop-blur-lg min-h-[500px]"> {/* Adjusted height */}
+        <div className="flex-grow flex items-center justify-center lg:justify-end p-4 lg:p-10 mt-10 lg:mr-28">
+          <div className="max-w-md w-full p-8 border border-purple-300 rounded-md shadow-md bg-white/20 min-h-[500px]"> {/* Blur effect with reduced opacity */}
             <div className="mb-4">
               {/* Image Section */}
               <div className="mb-1 flex justify-center">
                 <img
                   src={LoginImage}
                   alt="medicare"
-                  className="w-2/3 rounded-md " // Adjust class names as needed
+                  className="w-2/3 rounded-md" // Clear image without any blur
                 />
               </div>
 
@@ -75,6 +75,7 @@ const Login: React.FC = () => {
                     className="w-full px-3 py-2 border border-purple-300 rounded-md"
                     placeholder="Enter email or username"
                     required
+                    autoComplete="username" // Suggest username for autofill
                   />
                 </div>
                 <div className="mb-4">
@@ -86,6 +87,7 @@ const Login: React.FC = () => {
                     className="w-full px-3 py-2 border border-purple-300 rounded-md"
                     placeholder="Enter your password"
                     required
+                    autoComplete="current-password" // Suggest current password for autofill
                   />
                 </div>
                 {error && <p className="text-red-500">{error}</p>}

@@ -25,13 +25,13 @@ const Anesthesiology: React.FC = () => {
       <PatientNavbar />
       <h1 className="text-3xl font-bold mt-6 text-purple-900 ml-20">Anesthesiology</h1>
       <div className="flex mt-4">
-        {/* Left Side - Department Card */}
-        <div className="w-1/3 p-4 ml-12">
+        {/* Left Side - Department Card (hidden on mobile) */}
+        <div className="hidden md:block w-1/3 p-4 ml-12">
           <DepartmentCard departments={departments} />
         </div>
 
         {/* Right Side - Anesthesiology Content */}
-        <div className="w-2/3 p-6 bg-white text-gray-800">
+        <div className="w-full md:w-2/3 p-6 bg-white text-gray-800">
           <div className="flex justify-center mb-6">
             <img
               src={Image}
@@ -77,7 +77,7 @@ const Anesthesiology: React.FC = () => {
             {/* Anesthesia Services */}
             <h4 className="text-lg font-semibold mt-4">Cardiovascular Anesthesiology:</h4>
             <p>
-              The Department of Cardiac Anaesthesia & Intensive care is imparting anaesthesia services to all types of cardiac surgical procedures (routine & emergency). We conduct beating heart as well as bypass surgeries for CABGs, complex aneurysm repair, emergency aortic dissection repair, as well as valvular surgical cases. 
+              The Department of Cardiac Anaesthesia & Intensive care is imparting anaesthesia services to all types of cardiac surgical procedures (routine & emergency). We conduct beating heart as well as bypass surgeries for CABGs, complex aneurysm repair, emergency aortic dissection repair, as well as valvular surgical cases.
             </p>
             
             <h4 className="text-lg font-semibold mt-4">Pediatric Anaesthesia:</h4>

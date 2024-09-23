@@ -79,7 +79,7 @@ const MakeAppointment: React.FC = () => {
   return (
     <div className="relative flex flex-col h-screen">
       <PatientNavbar />
-      <div className="flex-grow p-6 w-full max-w-2xl mx-auto">
+      <div className="flex-grow p-6 w-full max-w-2xl md:ml-[240px]">
         <h2 className="text-2xl font-bold text-purple-900 text-center mb-4">Make an Appointment</h2>
         {error && <p className="text-red-600">{error}</p>}
         {success && <p className="text-green-600">{success}</p>}
@@ -92,7 +92,7 @@ const MakeAppointment: React.FC = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
               required
             />
           </div>
@@ -104,7 +104,7 @@ const MakeAppointment: React.FC = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
               required
             />
           </div>
@@ -116,7 +116,7 @@ const MakeAppointment: React.FC = () => {
               name="mobileNumber"
               value={formData.mobileNumber}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
               required
             />
           </div>
@@ -128,7 +128,7 @@ const MakeAppointment: React.FC = () => {
               name="adharNo"
               value={formData.adharNo}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
               required
             />
           </div>
@@ -139,7 +139,7 @@ const MakeAppointment: React.FC = () => {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
               required
             >
               <option value="">Select Gender</option>
@@ -156,7 +156,7 @@ const MakeAppointment: React.FC = () => {
               name="date"
               value={formData.date}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
               required
             />
           </div>
@@ -168,7 +168,7 @@ const MakeAppointment: React.FC = () => {
               name="time"
               value={formData.time}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
               required
             />
           </div>
@@ -179,21 +179,21 @@ const MakeAppointment: React.FC = () => {
               name="reason"
               value={formData.reason}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm focus:outline-none hover:bg-indigo-700"
+            className="w-full bg-purple-600 text-white py-2 px-4 rounded-md shadow-sm focus:outline-none hover:bg-purple-700"
             disabled={loading}
           >
             {loading ? 'Submitting...' : 'Submit'}
           </button>
         </form>
       </div>
-      <div className="absolute top-5 right-0">
-        <img src={Image} alt="Make Appointment" className="w-96 h-96 object-cover"/>
+      <div className="hidden md:block fixed top-1/4 right-6 z-10">
+        <img src={Image} alt="Make Appointment" className="w-[490px] h-[490px]" />
       </div>
     </div>
   );

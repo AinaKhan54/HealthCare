@@ -1,8 +1,7 @@
 import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import DepartmentCard from '../../../Components/Department-Component/DepartmentCard';
-import Image from "../../../assets/Images/radiology.jpg";
-
+import Image from '../../../assets/Images/radiology.jpg';
 
 const departments = [
   'Accident & Emergency',
@@ -24,14 +23,14 @@ const Radiology: React.FC = () => {
     <div className="relative flex flex-col h-screen">
       <PatientNavbar />
       <h1 className="text-3xl font-bold mt-6 text-purple-900 ml-20">Radiology</h1>
-      <div className="flex mt-4">
+      <div className="flex flex-col md:flex-row mt-4">
         {/* Left Side - Department Card */}
-        <div className="w-1/3 p-4 ml-12">
+        <div className="w-full md:w-1/3 p-4 hidden md:block">
           <DepartmentCard departments={departments} />
         </div>
 
         {/* Right Side - Radiology Content */}
-        <div className="w-2/3 p-6 bg-white text-gray-800">
+        <div className="w-full md:w-2/3 p-6 bg-white text-gray-800">
           <div className="flex justify-center mb-6">
             <img
               src={Image}
@@ -40,7 +39,6 @@ const Radiology: React.FC = () => {
             />
           </div>
 
-          {/* Content for Radiology */}
           <div className="mt-6">
             <h2 className="text-2xl font-semibold mb-4">Radiology</h2>
             <p>

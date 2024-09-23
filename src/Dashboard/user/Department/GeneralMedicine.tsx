@@ -2,7 +2,8 @@ import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import DepartmentCard from '../../../Components/Department-Component/DepartmentCard';
 import Image from "../../../assets/Images/doctor-hand.jpg";
-import DoctorImage from "../../../assets/Images/doctor2.jpg"
+import DoctorImage from "../../../assets/Images/doctor2.jpg";
+
 const departments = [
   'Accident & Emergency',
   'General Medicine',
@@ -23,18 +24,18 @@ const GeneralMedicine: React.FC = () => {
     <div className="relative flex flex-col h-screen">
       <PatientNavbar />
       <h1 className="text-3xl font-bold mt-6 text-purple-900 ml-20">General Medicine</h1>
-      <div className="flex mt-4">
+      <div className="flex flex-col md:flex-row mt-4">
         {/* Left Side - Department Card */}
-        <div className="w-1/3 p-4 ml-12">
+        <div className="w-full md:w-1/3 p-4 hidden md:block">
           <DepartmentCard departments={departments} />
         </div>
 
         {/* Right Side - General Content */}
-        <div className="w-2/3 p-6 bg-white text-gray-800">
+        <div className="w-full md:w-2/3 p-6 bg-white text-gray-800">
           <div className="flex justify-center mb-6 max-h-46 max-w-54">
             <img
               src={Image}
-              alt="Contact Us"
+              alt="General Medicine"
               className="h-auto md:w-2/3 transition-transform duration-300 ease-in-out transform hover:scale-90 rounded-lg"
             />
           </div>
@@ -73,15 +74,15 @@ const GeneralMedicine: React.FC = () => {
             </ul>
             <div className='bg-purple-200 rounded-lg shadow-md p-4 w-64 mt-10 h-72'>
               {/* Image */}
-               <div className="flex justify-center">
-                 <img
-                    src={DoctorImage} // Replace with the actual path to your image
-                    alt="Dr. Tarun Bhatnagar"
-                    className="w-32 h-32 rounded-full object-cover" // Adjust size as needed
-                    />
-                </div>
+              <div className="flex justify-center">
+                <img
+                  src={DoctorImage} // Replace with the actual path to your image
+                  alt="Dr. Preeti Bhatnagar"
+                  className="w-32 h-32 rounded-full object-cover" // Adjust size as needed
+                />
+              </div>
               <h4 className="text-lg font-semibold mt-8">Dr. Preeti Bhatnagar</h4>
-             <p>Consultant Adult & Pediatric Endocrinologist</p>
+              <p>Consultant Adult & Pediatric Endocrinologist</p>
             </div>
             <button className="mt-4 px-6 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-800">
               Book an Appointment

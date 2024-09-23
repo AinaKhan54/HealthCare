@@ -24,14 +24,14 @@ const ObstetricsGynecology: React.FC = () => {
     <div className="relative flex flex-col h-screen">
       <PatientNavbar />
       <h1 className="text-3xl font-bold mt-6 text-purple-900 ml-20">Obstetrics & Gynecology</h1>
-      <div className="flex mt-4">
+      <div className="flex flex-col md:flex-row mt-4">
         {/* Left Side - Department Card */}
-        <div className="w-1/3 p-4 ml-12">
+        <div className="w-full md:w-1/3 p-4 hidden md:block">
           <DepartmentCard departments={departments} />
         </div>
 
         {/* Right Side - Obstetrics & Gynecology Content */}
-        <div className="w-2/3 p-6 bg-white text-gray-800">
+        <div className="w-full md:w-2/3 p-6 bg-white text-gray-800">
           <div className="flex justify-center mb-6">
             <img
               src={Image}
@@ -125,17 +125,18 @@ const ObstetricsGynecology: React.FC = () => {
               <li>Low-cost IVF infertility treatment services</li>
               <li>24x7 blood bank services for emergencies</li>
             </ul>
+            
             <div className='bg-purple-200 rounded-lg shadow-md p-4 w-64 mt-10 h-72'>
               {/* Image */}
-               <div className="flex justify-center">
-                 <img
-                    src={DoctorImage} // Replace with the actual path to your image
-                    alt="Dr. Tarun Bhatnagar"
-                    className="w-32 h-32 rounded-full object-cover" // Adjust size as needed
-                    />
-                </div>
+              <div className="flex justify-center">
+                <img
+                  src={DoctorImage}
+                  alt="Dr. Tarun Bhatnagar"
+                  className="w-32 h-32 rounded-full object-cover"
+                />
+              </div>
               <h4 className="text-lg font-semibold mt-8">Dr. Tarun Bhatnagar</h4>
-             <p>Sr. Consultant & HOD - Anaesthesia</p>
+              <p>Sr. Consultant & HOD - Anaesthesia</p>
             </div>
 
             <button className="mt-4 px-6 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-800">

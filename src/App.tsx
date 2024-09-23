@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Sidebar from './layout/adminLayout/sidebar';
 import Home from './Dashboard/admin/Pages/home';
 import Navbar from './layout/adminLayout/navbar';
@@ -38,26 +39,45 @@ import IntensiveCareUnit from './Dashboard/user/Department/IntensiveCareUnit';
 import InternalMedicine from './Dashboard/user/Department/InternalMedicine';
 import Pathology from './Dashboard/user/Department/Pathology';
 import Pharmacy from './Dashboard/user/Department/Pharmacy';
+import ProtectedRoute from "./auth/ProtectedRoutes"; // Adjust the path as needed
+import PatientRegistrationForm from './Dashboard/admin/patient/patientAdd';
+import DoctorProfile from './Dashboard/user/MedicalExpertsProfiles/doctor1';
+import { RootState } from './store';
+
 interface AppLayoutProps {
   children: React.ReactNode;
 }
 
 function AppLayout({ children }: AppLayoutProps) {
   const location = useLocation();
-  const hideNavbarAndSidebar = location.pathname === '/login' || 
+  const auth = useSelector((state: RootState) => state.auth.isAuthenticated);
+
+  // Determine if the route is for the admin area
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  // Redirect if necessary
+  if (isAdminRoute && !auth) {
+    return <Navigate to="/login" replace />;
+  } else if (!isAdminRoute && auth && location.pathname === '/') {
+    // Redirect authenticated users to /admin/home-page if they try to access the root
+    return <Navigate to="/admin/home-page" replace />;
+  }
+
+  const hideNavbarAndSidebar = 
+    location.pathname === '/login' || 
     location.pathname === '/signup' || 
-    location.pathname === '/patientDashboard' || 
-    location.pathname === '/Patient/MedicalExpert' || 
-    location.pathname === "/Patient/ContactUs" ||
-    location.pathname === "/MakeAppointment" ||
-    location.pathname === "/HealthBlog" ||
-    location.pathname === "/HealthyLifeStyle"||
-    location.pathname === "/Vitamin-D"||
-    location.pathname === "/QuitSmoking" ||
-    location.pathname === "/Kidneys" ||
-    location.pathname === "/Childhood-Obesity" ||
-    location.pathname === "/BloodSugar" ||
-    location.pathname === "/About" ||
+    location.pathname === '/home' || 
+    location.pathname === '/medical-expert' || 
+    location.pathname === "/ContactUs" ||
+    location.pathname === "/make-appointment" ||
+    location.pathname === "/health-blog" ||
+    location.pathname === "/health-blog/healthy-lifestyle" ||
+    location.pathname === "/health-blog/vitamin-d" ||
+    location.pathname === "/health-blog/quit-smoking" ||
+    location.pathname === "/health-blog/kidneys" ||
+    location.pathname === "/health-blog/childhood-obesity" ||
+    location.pathname === "/health-blog/blood-sugar" ||
+    location.pathname === "/about" ||
     location.pathname === "/patient-profile" ||
     location.pathname === "/accident-emergency" ||
     location.pathname === "/general-medicine" ||
@@ -69,8 +89,9 @@ function AppLayout({ children }: AppLayoutProps) {
     location.pathname === "/surgical-department" ||
     location.pathname === "/intensive-care-unit" ||
     location.pathname === "/internal-medicine" ||
-    location.pathname === "/pathology"||
-    location.pathname === "/pharmacy";
+    location.pathname === "/pathology" ||
+    location.pathname === "/pharmacy" ||
+    location.pathname === "/doctor1";
 
   return (
     <>
@@ -91,28 +112,24 @@ function App() {
       <ErrorBoundary>
         <AppLayout>
           <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/patientDashboard" element={<PatientDashboard />} />
-            <Route path="/doctors" element={<Doctors />} />
-            <Route path="/appointment" element={<Appointment />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+            {/* Public Routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/patients/AllDetails" element={<AllPatientDetails />} />
-            <Route path="/doctor/doctorschedule" element={<DoctorSchedule />} />
-            <Route path="/Patient/MedicalExpert" element={<MedicalExperts />} />
-            <Route path="/Patient/ContactUs" element={<ContactUs />} />
-            <Route path="/AllDoctor" element={<AllDoctorDetails />} />
-            <Route path="/AddDoctor" element={<AddDoctor />} />
-            <Route path="/MakeAppointment" element={<MakeAppointment />} />
-            <Route path="/Messages" element={<Messages />} />
-            <Route path="/HealthBlog" element={<HealthBlog />} />
-            <Route path="/HealthyLifeStyle" element={<HealthyLifeStyle />} />
-            <Route path="/Vitamin-D" element={<VitaminD />} />
-            <Route path="/QuitSmoking" element={<QuitSmoking />} />
-            <Route path="/Kidneys" element={<Kidneys />} />
-            <Route path="/Childhood-Obesity" element={<ChildObesity />} />
-            <Route path="/BloodSugar" element={<BloodSugar />} />
-            <Route path="/About" element={<About />} />
+            <Route path="/home" element={<PatientDashboard />} />
+            <Route path="/medical-expert" element={<MedicalExperts />} />
+            <Route path="/ContactUs" element={<ContactUs />} />
+            <Route path="/make-appointment" element={<MakeAppointment />} />
+            <Route path="/health-blog" element={<HealthBlog />} />
+            <Route path="/health-blog/healthy-lifestyle" element={<HealthyLifeStyle />} />
+            <Route path="/health-blog/vitamin-d" element={<VitaminD />} />
+            <Route path="/health-blog/quit-smoking" element={<QuitSmoking />} />
+            <Route path="/health-blog/kidneys" element={<Kidneys />} />
+            <Route path="/health-blog/childhood-obesity" element={<ChildObesity />} />
+            <Route path="/health-blog/blood-sugar" element={<BloodSugar />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/admin/add-patients" element={<PatientRegistrationForm />} />
+            <Route path="/admin/doctor/add-Doctor" element={<AddDoctor />} />
             <Route path="/patient-profile" element={<PatientProfilePage />} />
             <Route path="/accident-emergency" element={<AccidentEmergency />} />
             <Route path="/general-medicine" element={<GeneralMedicine />} />
@@ -126,6 +143,19 @@ function App() {
             <Route path="/internal-medicine" element={<InternalMedicine />} />
             <Route path="/pathology" element={<Pathology />} />
             <Route path="/pharmacy" element={<Pharmacy />} />
+            <Route path="/doctor1" element={<DoctorProfile />} />
+            
+
+            {/* Protected Routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/admin/home-page" element={<Home />} />
+              <Route path="/admin/doctors" element={<Doctors />} />
+              <Route path="/admin/appointment" element={<Appointment />} />
+              <Route path="/admin/patients-all-details" element={<AllPatientDetails />} />
+              <Route path="/admin/doctor/doctor-schedule" element={<DoctorSchedule />} />
+              <Route path="/admin/doctor/doctor-all-doctor" element={<AllDoctorDetails />} />
+              <Route path="/admin/messages" element={<Messages />} />
+            </Route>
           </Routes>
         </AppLayout>
       </ErrorBoundary>

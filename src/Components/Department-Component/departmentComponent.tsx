@@ -18,8 +18,10 @@ const departments = [
 
 const DepartmentList: React.FC = () => {
   return (
-    <div className="p-4">
-      <DepartmentCard departments={departments} /> {/* Pass departments prop */}
+    <div className="p-4 flex justify-center">
+      <div className="w-full max-w-screen-md">
+        <DepartmentCard departments={departments} /> {/* Pass departments prop */}
+      </div>
     </div>
   );
 };

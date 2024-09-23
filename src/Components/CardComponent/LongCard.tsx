@@ -52,14 +52,14 @@ const LongCard: React.FC<LongCardProps> = ({ icon, title, content, color, width,
   };
 
   return (
-    <div className={`relative p-2 rounded-lg shadow-lg ${color} ${width} ${height}`}>
-      <div className="flex items-center mb-4">
-        <div className="bg-white/30 p-5 rounded-full flex items-center justify-center">
+    <div className={`relative p-4 rounded-lg shadow-lg ${color} ${width} ${height}`}>
+      <div className="flex flex-col md:flex-row items-center mb-4">
+        <div className="bg-white/30 p-4 md:p-5 rounded-full flex items-center justify-center">
           {icon}
         </div>
-        <div className="ml-4 text-gray-800 mb-1">
-          <p className="text-lg font-semibold m-0">{title}</p>
-          <h2 className="text-3xl font-semibold m-0">{content}</h2>
+        <div className="mt-4 md:mt-0 md:ml-4 text-gray-800">
+          <p className="text-base md:text-lg font-semibold m-0">{title}</p>
+          <h2 className="text-xl md:text-3xl font-semibold m-0">{content}</h2>
         </div>
       </div>
       <div className="relative">
@@ -69,14 +69,14 @@ const LongCard: React.FC<LongCardProps> = ({ icon, title, content, color, width,
               <img
                 src={image}
                 alt={`team-member-${index}`}
-                className="w-40 h-40 rounded-full object-cover mb-2"
+                className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover mb-2"
                 style={{ maxHeight: '150px', maxWidth: '150px' }}
               />
               {/* Display doctor’s name and specialization just below the image */}
               {doctors && doctors[index] && (
                 <div className="text-center">
-                  <p className="text-sm font-semibold mr-14">{doctors[index].name}</p>
-                  <p className="text-xs mr-14">{doctors[index].specialization}</p>
+                  <p className="text-xs md:text-sm font-semibold">{doctors[index].name}</p>
+                  <p className="text-xs">{doctors[index].specialization}</p>
                 </div>
               )}
             </div>

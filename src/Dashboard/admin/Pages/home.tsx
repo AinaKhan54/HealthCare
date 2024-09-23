@@ -82,7 +82,7 @@ const Home: React.FC = () => {
   ];
 
   return (
-    <div className="p-10 bg-gray-100">
+    <div className="p-32 bg-gray-100 ml-40 mt-[-80px]">
       <div className="flex justify-between w-full mb-8">
         <Card 
           icon={<PeopleIcon className="text-white text-5xl" />} 

@@ -1,348 +1,216 @@
-// import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { z } from 'zod';
+import { createPatient } from '../../../utils/userApi';
 
-// interface Address {
-//   street: string;
-//   city: string;
-//   state: string;
-//   postalCode: string;
-//   country: string;
-// }
+// Zod validation schema
+const patientSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email format'),
+  mobileNumber: z.string().min(10, 'Mobile number must be at least 10 characters long'),
+  age: z.string().nonempty('Age is required'),
+  gender: z.enum(['male', 'female'], {
+    errorMap: () => ({ message: 'Select a valid gender' }),
+  }),
+  address: z.string().min(1, 'Address is required'),
+  medicalHistory: z.string().optional(),
+});
 
-// interface MedicalHistory {
-//   anemia: boolean;
-//   asthma: boolean;
-//   bronchitis: boolean;
-//   chickenpox: boolean;
-// }
+interface PatientsFormData {
+  name: string;
+  email: string;
+  mobileNumber: string;
+  age: string; // Kept as string for date input
+  gender: string;
+  address: string;
+  medicalHistory: string;
+}
 
-// interface FormData {
-//   firstname: string;
-//   lastname: string;
-//   gender: string;
-//   phone: string;
-//   email: string;
-//   dob: string;
-//   maritalStatus: string;
-//   address: Address;
-//   medicalHistory: MedicalHistory;
-// }
+const PatientRegistrationForm: React.FC = () => {
+  const [formData, setFormData] = useState<PatientsFormData>({
+    name: '',
+    email: '',
+    mobileNumber: '',
+    age: '',
+    gender: '',
+    address: '',
+    medicalHistory: '',
+  });
 
-// const PatientRegistrationForm: React.FC = () => {
-//   const [formData, setFormData] = useState<FormData>({
-//     firstname: '',
-//     lastname: '',
-//     gender: '',
-//     phone: '',
-//     email: '',
-//     dob: '',
-//     maritalStatus: '',
-//     address: {
-//       street: '',
-//       city: '',
-//       state: '',
-//       postalCode: '',
-//       country: ''
-//     },
-//     medicalHistory: {
-//       anemia: false,
-//       asthma: false,
-//       bronchitis: false,
-//       chickenpox: false,
-//     },
-//   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-//   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-//     const { name, value, type, checked } = e.target;
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
 
-//     if (type === 'checkbox') {
-//       setFormData({
-//         ...formData,
-//         medicalHistory: {
-//           ...formData.medicalHistory,
-//           [name]: checked,
-//         },
-//       });
-//     } else if (name in formData.address) {
-//       setFormData({
-//         ...formData,
-//         address: {
-//           ...formData.address,
-//           [name]: value,
-//         },
-//       });
-//     } else {
-//       setFormData({
-//         ...formData,
-//         [name]: value,
-//       });
-//     }
-//   };
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    setErrors({});
 
-//   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     // Handle form submission (e.g., send data to a server)
-//     console.log('Form Data:', formData);
-//   };
+    try {
+      // Validate form data
+      patientSchema.parse(formData);
 
-//   return (
-//     <div className="max-w-3xl mx-auto" style={{ marginTop: '-50px' }}>
-//       <h2 className="text-2xl font-bold mb-6 text-glow text-fourth text-center">Patient Registration Form</h2>
-//       <div className="p-6 bg-white shadow-md rounded-lg">
-//         <form onSubmit={handleSubmit}>
-//           <div className="mb-4 flex space-x-4">
-//             <div className="flex-1">
-//               <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
-//                 First Name
-//               </label>
-//               <input
-//                 type="text"
-//                 id="firstname"
-//                 name="firstname"
-//                 value={formData.firstname}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//                 required
-//               />
-//             </div>
-//             <div className="flex-1">
-//               <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">
-//                 Last Name
-//               </label>
-//               <input
-//                 type="text"
-//                 id="lastname"
-//                 name="lastname"
-//                 value={formData.lastname}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//                 required
-//               />
-//             </div>
-//           </div>
-//           <div className="mb-4 flex space-x-4">
-//             <div className="flex-1">
-//               <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-//                 Mobile Number
-//               </label>
-//               <input
-//                 type="tel"
-//                 id="phone"
-//                 name="phone"
-//                 value={formData.phone}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//                 required
-//               />
-//             </div>
-//             <div className="flex-1">
-//               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-//                 Email
-//               </label>
-//               <input
-//                 type="email"
-//                 id="email"
-//                 name="email"
-//                 value={formData.email}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//                 required
-//               />
-//             </div>
-//           </div>
-//           <div className="mb-4">
-//             <label htmlFor="dob" className="block text-sm font-medium text-gray-700">
-//               Date of Birth
-//             </label>
-//             <input
-//               type="date"
-//               id="dob"
-//               name="dob"
-//               value={formData.dob}
-//               onChange={handleChange}
-//               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//               required
-//             />
-//           </div>
-//           <div className="mb-4">
-//             <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
-//               Gender
-//             </label>
-//             <div className="mt-1">
-//               <label>
-//                 <input
-//                   type="radio"
-//                   name="gender"
-//                   value="male"
-//                   checked={formData.gender === 'male'}
-//                   onChange={handleChange}
-//                   className="mr-2"
-//                 />
-//                 Male
-//               </label>
-//               <label className="ml-4">
-//                 <input
-//                   type="radio"
-//                   name="gender"
-//                   value="female"
-//                   checked={formData.gender === 'female'}
-//                   onChange={handleChange}
-//                   className="mr-2"
-//                 />
-//                 Female
-//               </label>
-//             </div>
-//           </div>
-//           <div className="mb-4">
-//             <label htmlFor="maritalStatus" className="block text-sm font-medium text-gray-700">
-//               Marital Status
-//             </label>
-//             <div className="mt-1">
-//               <label>
-//                 <input
-//                   type="radio"
-//                   name="maritalStatus"
-//                   value="single"
-//                   checked={formData.maritalStatus === 'single'}
-//                   onChange={handleChange}
-//                   className="mr-2"
-//                 />
-//                 Single
-//               </label>
-//               <label className="ml-4">
-//                 <input
-//                   type="radio"
-//                   name="maritalStatus"
-//                   value="married"
-//                   checked={formData.maritalStatus === 'married'}
-//                   onChange={handleChange}
-//                   className="mr-2"
-//                 />
-//                 Married
-//               </label>
-//               <label className="ml-4">
-//                 <input
-//                   type="radio"
-//                   name="maritalStatus"
-//                   value="divorced"
-//                   checked={formData.maritalStatus === 'divorced'}
-//                   onChange={handleChange}
-//                   className="mr-2"
-//                 />
-//                 Divorced
-//               </label>
-//               <label className="ml-4">
-//                 <input
-//                   type="radio"
-//                   name="maritalStatus"
-//                   value="widow"
-//                   checked={formData.maritalStatus === 'widow'}
-//                   onChange={handleChange}
-//                   className="mr-2"
-//                 />
-//                 Widow
-//               </label>
-//             </div>
-//           </div>
-//           <div className="mb-4">
-//             <label htmlFor="street" className="block text-sm font-medium text-gray-700">
-//               Street Address
-//             </label>
-//             <input
-//               type="text"
-//               id="street"
-//               name="street"
-//               value={formData.address.street}
-//               onChange={handleChange}
-//               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//               required
-//             />
-//           </div>
+      // Prepare FormData for submission
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('mobileNumber', formData.mobileNumber);
+      formDataToSend.append('age', formData.age);
+      formDataToSend.append('gender', formData.gender);
+      formDataToSend.append('address', formData.address);
+      formDataToSend.append('medicalHistory', formData.medicalHistory);
 
-//           <div className="mb-4 flex space-x-4">
-//             <div className="flex-1">
-//               <label htmlFor="city" className="block text-sm font-medium text-gray-700">
-//                 City
-//               </label>
-//               <input
-//                 type="text"
-//                 id="city"
-//                 name="city"
-//                 value={formData.address.city}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//                 required
-//               />
-//             </div>
+      // API call to create patient
+      await createPatient(formDataToSend);
 
-//             <div className="flex-1">
-//               <label htmlFor="state" className="block text-sm font-medium text-gray-700">
-//                 State
-//               </label>
-//               <input
-//                 type="text"
-//                 id="state"
-//                 name="state"
-//                 value={formData.address.state}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//                 required
-//               />
-//             </div>
-//           </div>
+      // Clear form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        mobileNumber: '',
+        age: '',
+        gender: '',
+        address: '',
+        medicalHistory: '',
+      });
 
-//           <div className="mb-4 flex space-x-4">
-//             <div className="flex-1">
-//               <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
-//                 Postal/Zip Code
-//               </label>
-//               <input
-//                 type="text"
-//                 id="postalCode"
-//                 name="postalCode"
-//                 value={formData.address.postalCode}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//                 required
-//               />
-//             </div>
+      alert('Patient registration successful!');
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        const formattedErrors: Record<string, string> = {};
+        err.errors.forEach((issue) => {
+          const path = issue.path.join('.');
+          formattedErrors[path] = issue.message;
+        });
+        setErrors(formattedErrors);
+      } else {
+        alert('There was an issue with the submission. Please try again.');
+      }
+    }
+  };
 
-//             <div className="flex-1">
-//               <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-//                 Country
-//               </label>
-//               <input
-//                 type="text"
-//                 id="country"
-//                 name="country"
-//                 value={formData.address.country}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-//                 required
-//               />
-//             </div>
-//           </div>
-
-//           <button
-//             type="submit"
-//             className="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
-//           >
-//             Register
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default PatientRegistrationForm;
-import React from 'react';
-
-const Contact: React.FC = () => {
   return (
-    <div>
-      Contact
+    <div className='p-2 pl-14 md:pl-20 bg-gray-100'>
+      <div className="max-w-xl mx-auto">
+        <h2 className="text-2xl font-bold mb-6 text-purple-900 text-center">Patient Registration Form</h2>
+        <div className="p-6 bg-white shadow-md rounded-lg">
+          <form onSubmit={handleSubmit}>
+            {/* Name */}
+            <div className="mb-4">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors['name'] && <p className="text-red-600">{errors['name']}</p>}
+            </div>
+
+            {/* Email */}
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors['email'] && <p className="text-red-600">{errors['email']}</p>}
+            </div>
+
+            {/* Mobile Number */}
+            <div className="mb-4">
+              <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">Mobile Number</label>
+              <input
+                type="tel"
+                id="mobileNumber"
+                name="mobileNumber"
+                value={formData.mobileNumber}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors['mobileNumber'] && <p className="text-red-600">{errors['mobileNumber']}</p>}
+            </div>
+
+            {/* Age  */}
+            <div className="mb-4">
+              <label htmlFor="age" className="block text-sm font-medium text-gray-700">Age</label>
+              <input
+                type="date"
+                id="age"
+                name="age"
+                value={formData.age}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors['age'] && <p className="text-red-600">{errors['age']}</p>}
+            </div>
+
+            {/* Gender */}
+            <div className="mb-4">
+              <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+              <select
+                id="gender"
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+              {errors['gender'] && <p className="text-red-600">{errors['gender']}</p>}
+            </div>
+
+            {/* Address Field */}
+            <div className="mb-4">
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors['address'] && <p className="text-red-600">{errors['address']}</p>}
+            </div>
+
+            {/* Medical History */}
+            <div className="mb-4">
+              <label htmlFor="medicalHistory" className="block text-sm font-medium text-gray-700">Medical History</label>
+              <input
+                type="text"
+                id="medicalHistory"
+                name="medicalHistory"
+                value={formData.medicalHistory}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors['medicalHistory'] && <p className="text-red-600">{errors['medicalHistory']}</p>}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-purple-900 text-white py-2 px-4 rounded-md hover:bg-purple-700"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Contact;
+export default PatientRegistrationForm;

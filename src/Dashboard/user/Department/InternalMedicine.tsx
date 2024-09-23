@@ -23,14 +23,14 @@ const InternalMedicine: React.FC = () => {
     <div className="relative flex flex-col h-screen">
       <PatientNavbar />
       <h1 className="text-3xl font-bold mt-6 text-purple-900 ml-20">Internal Medicine</h1>
-      <div className="flex mt-4">
+      <div className="flex flex-col md:flex-row mt-4">
         {/* Left Side - Department Card */}
-        <div className="w-1/3 p-4 ml-12">
+        <div className="w-full md:w-1/3 p-4 hidden md:block">
           <DepartmentCard departments={departments} />
         </div>
 
         {/* Right Side - Internal Medicine Content */}
-        <div className="w-2/3 p-6 bg-white text-gray-800">
+        <div className="w-full md:w-2/3 p-6 bg-white text-gray-800">
           <div className="flex justify-center mb-6">
             <img
               src={Image}

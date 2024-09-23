@@ -28,9 +28,9 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     if (this.state.hasError) {
       // Fallback UI for when an error occurs
       return (
-        <div className="text-center p-4 bg-red-100 text-red-700 border border-red-300 rounded-md">
-          <h2 className="text-xl font-semibold">Something went wrong.</h2>
-          <p>We encountered an error while processing your request. Please try again later.</p>
+        <div className="text-center p-4 sm:p-6 md:p-8 bg-red-100 text-red-700 border border-red-300 rounded-md max-w-md mx-auto">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">Something went wrong.</h2>
+          <p className="text-sm sm:text-base md:text-lg">We encountered an error while processing your request. Please try again later.</p>
         </div>
       );
     }

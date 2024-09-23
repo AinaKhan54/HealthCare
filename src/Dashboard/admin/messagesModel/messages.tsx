@@ -66,23 +66,24 @@ const Messages: React.FC = () => {
   };
 
   return (
-    <div className="p-10">
+    <div className="flex flex-col h-screen p-10 ml-[250px] bg-gray-300">
       <div className="flex justify-end mb-4">
         <TextField
           label="Search"
           variant="outlined"
           value={searchQuery}
+          className="w-full max-w-xs"
           onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
         />
       </div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Message</TableCell>
-              <TableCell>Actions</TableCell>
+            <TableRow sx={{ backgroundColor: 'purple' }}> {/* Set the header row background color */}
+              <TableCell sx={{ color: 'white' }}>Name</TableCell> {/* Set text color to white */}
+              <TableCell sx={{ color: 'white' }}>Email</TableCell>
+              <TableCell sx={{ color: 'white' }}>Message</TableCell>
+              <TableCell sx={{ color: 'white' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

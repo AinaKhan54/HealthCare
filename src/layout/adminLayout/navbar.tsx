@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import logo from "../../assets/Images/logo3.png"
-import userProfile from "../../assets/Images/user1.png"
+import logo from "../../assets/Images/logo3.png";
+import userProfile from "../../assets/Images/user1.png";
 import { FiSearch, FiBell } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,8 +43,8 @@ const Navbar: React.FC = () => {
             <div className='flex items-center flex-shrink-0'>
                 <img src={logo} alt='logo' className='w-40 h-30' />
             </div>
-            <div className='flex-grow flex items-center ml-20'>
-                <div className='relative flex items-center w-64 max-w-lg ml-4'>
+            <div className='flex-grow hidden lg:flex items-center ml-[80px]'>
+                <div className='relative flex items-center w-64 max-w-lg'>
                     <input
                         type='text'
                         placeholder='Search'
@@ -65,18 +65,18 @@ const Navbar: React.FC = () => {
                         onClick={handleProfileClick}
                     />
                     {isDropdownOpen && (
-                        <div className='absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg py-1'>
+                        <div className='absolute right-0  w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50'>
                             {isLoggedIn ? (
                                 <>
                                     <button
                                         onClick={handleViewProfile}
-                                        className='block w-full text-center px-4 py-2 text-gray-700 hover:bg-gray-100'
+                                        className='block w-full text-center px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 mb-2'
                                     >
                                         View Profile
                                     </button>
                                     <button
                                         onClick={handleLogout}
-                                        className='block w-full text-center px-4 py-2 text-gray-700 hover:bg-gray-100'
+                                        className='block w-full text-center px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600'
                                     >
                                         Logout
                                     </button>
@@ -84,7 +84,7 @@ const Navbar: React.FC = () => {
                             ) : (
                                 <button
                                     onClick={handleLogin}
-                                    className='block w-full text-center px-4 py-2 text-purple-800 hover:bg-purple-200'
+                                    className='block w-full text-center px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600'
                                 >
                                     Login
                                 </button>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
-import Image from "../../assets/Images/signn.png";
+import Image from "../../assets/Images/sign123.png";
 import LoginImage from "../../assets/Images/medi.png";
 
 const signupSchema = z.object({
@@ -46,24 +46,16 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen bg-purple-200">
-      
-      {/* Image Section */}
-      <div 
-        className="flex-none w-2/3 h-full bg-no-repeat bg-cover mb-30"
-        style={{ 
-          backgroundImage: `url(${Image})`, 
-          backgroundPosition: 'center', 
-          backgroundSize: 'contain', 
-          height: '90vh' 
-        }}
-      >
-       
+    <div className="fixed inset-0 bg-purple-200">
+    {/* Main content */}
+    <div className="flex flex-col lg:flex-row h-full">
+      {/* Left side for the image, hidden on smaller screens */}
+      <div className="hidden lg:flex flex-none w-2/4 h-full bg-no-repeat bg-cover ml-32" style={{ backgroundImage: `url(${Image})`, backgroundPosition: 'center', backgroundSize: 'contain' }}>
       </div>
 
       {/* Form Section */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <div className="max-w-md w-full p-6 border border-purple-300 rounded-md shadow-md bg-white/30 backdrop-blur-lg mr-28">
+      <div className="flex-grow flex items-center justify-center lg:justify-end p-4 lg:p-10 mt-10 lg:mr-28">
+        <div className="max-w-md w-full p-8 border border-purple-300 rounded-md shadow-md bg-white/20 min-h-[500px]">
         <div className="mb-4">
               {/* Image Section */}
               <div className="mb-1 flex justify-center">
@@ -129,6 +121,7 @@ const Signup: React.FC = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
     </div>
   );

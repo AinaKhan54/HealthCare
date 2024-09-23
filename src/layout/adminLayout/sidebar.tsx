@@ -1,108 +1,119 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { HomeIcon, UserGroupIcon, UserIcon, CalendarIcon, MapIcon } from '@heroicons/react/24/outline';
+import { FaChevronRight } from 'react-icons/fa';
 
 interface Route {
-  path?: string; // path can be undefined
+  path?: string;
   label: string;
   subRoutes?: Route[];
+  icon: JSX.Element;
 }
 
 const routes: Route[] = [
-  { path: "/home", label: "Home" },
+  { path: "/admin/home-page", label: "Home", icon: <HomeIcon className="w-6 h-6 ml-[3px]" /> },
   {
-    label: "Patients",
-    subRoutes: [
-      { path: "/patients/AllDetails", label: "All Patients" },
-      { path: "/patients/add", label: "Add Patient" },
+    label: "Patients", icon: <UserGroupIcon className="w-6 h-6 ml-[3px]" />, subRoutes: [
+      { path: "/admin/patients-all-details", label: "All Patients", icon: <UserGroupIcon className="w-5 h-5" /> },
+      { path: "/admin/add-patients", label: "Add Patient", icon: <UserIcon className="w-5 h-5" /> },
     ],
   },
   {
-    label: "Doctors",
-    subRoutes: [
-      { path: "/AllDoctor", label: "All Doctors" },
-      { path: "/doctor/doctorschedule", label: "Doctor Schedule" },
-      { path: "/AddDoctor", label: "Add Doctor" },
+    label: "Doctors", icon: <UserGroupIcon className="w-6 h-6 ml-[3px]" />, subRoutes: [
+      { path: "/admin/doctor/doctor-all-doctor", label: "All Doctors", icon: <UserGroupIcon className="w-5 h-5" /> },
+      { path: "/admin/doctor/doctor-schedule", label: "Doctor Schedule", icon: <CalendarIcon className="w-5 h-5" /> },
+      { path: "/admin/doctor/add-Doctor", label: "Add Doctor", icon: <UserIcon className="w-5 h-5" /> },
     ],
   },
-  { path: "/appointment", label: "Appointment" },
-  // { path: "/contact", label: "Contact" },
-  // { path: "/about", label: "About" },
-  {path: "/Messages", label: "Messages"},
+  { path: "/admin/appointment", label: "Appointment", icon: <CalendarIcon className="w-6 h-6 ml-[3px]" /> },
+  { path: "/admin/messages", label: "Messages", icon: <MapIcon className="w-6 h-6 ml-[3px]" /> },
 ];
 
 const Sidebar: React.FC = () => {
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null); // Manage which dropdown is open
-  const [selectedPath, setSelectedPath] = useState<string | null>(null); // Manage which sidebar option is selected
-  const sidebarRef = useRef<HTMLDivElement | null>(null); // Ref to manage clicks outside sidebar
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [selectedPath, setSelectedPath] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(true); // Manage sidebar open/close state
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
 
-  // Toggle dropdown visibility
   const toggleDropdown = (label: string) => {
-    setOpenDropdown(openDropdown === label ? null : label);
+    setOpenDropdown(openDropdown === label ? null : label); // Toggle dropdown visibility
   };
 
-  // Handle click outside sidebar to close dropdown
   const handleClickOutside = (e: MouseEvent) => {
     if (sidebarRef.current && !sidebarRef.current.contains(e.target as Node)) {
-      setOpenDropdown(null);
+      setOpenDropdown(null); // Close dropdown if clicked outside
+      if (window.innerWidth < 768) {
+        setIsOpen(false); // Close sidebar on mobile when clicking outside
+      }
     }
   };
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [openDropdown]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsOpen(false); // Automatically close sidebar on smaller screens
+      } else {
+        setIsOpen(true); // Automatically open sidebar on larger screens
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Call once to set the initial state
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const handleLinkClick = () => {
+    if (window.innerWidth < 768) {
+      setIsOpen(false); // Close sidebar when a link is clicked on mobile
+    }
+  };
 
   return (
     <div
       ref={sidebarRef}
-      className="sticky top-0 font-antique olive block border-0 border-red-300 h-screen w-64 bg-secondary text-primary"
+      className={`fixed top-0 mt-[70px] left-0 h-screen bg-purple-200 text-purple-800 transition-all duration-300 ease-in-out ${isOpen ? 'w-64' : 'w-14'} overflow-hidden`}
     >
+      <div className="flex items-center mb-2 justify-between p-4 border-b border-purple-200">
+        {isOpen && (
+          <h1 className="text-xl font-bold hidden md:block">Admin Dashboard</h1>
+        )}
+      </div>
       <nav className="mt-0">
-        <ul>
+        <ul className="space-y-2">
           {routes.map((route, index) => (
-            <li key={index} className="mb-2">
+            <li key={index} className="relative">
               {route.subRoutes ? (
                 <>
                   <button
                     onClick={() => toggleDropdown(route.label)}
-                    className={`block w-full text-left p-3 h-12 rounded flex justify-between items-center transition-colors duration-300 ${
-                      openDropdown === route.label ? 'bg-fourth text-white' : 'hover:bg-fourth hover:text-white'
-                    }`}
+                    className={`block w-full text-left p-3 h-12 rounded flex items-center transition-colors duration-300 ${openDropdown === route.label ? 'bg-fourth text-white' : 'hover:bg-fourth hover:text-white'}`}
                   >
-                    <span>{route.label}</span>
-                    <span
-                      className={`transform transition-transform duration-300 ease-in-out ${
-                        openDropdown === route.label ? 'rotate-180' : ''
-                      }`}
-                    >
-                      <svg
-                        className="w-4 h-4 text-primary"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 9l-7 7-7-7"
-                        ></path>
-                      </svg>
+                    <span className="mr-4">{route.icon}</span>
+                    <span className={`flex-1 ${!isOpen ? 'hidden' : 'block'} md:block`}>{route.label}</span>
+                    <span className={`ml-auto flex items-center transform transition-transform duration-300 ease-in-out ${openDropdown === route.label ? 'rotate-90' : ''}`}>
+                      <FaChevronRight className="w-4 h-4 text-primary" />
                     </span>
                   </button>
                   {openDropdown === route.label && (
-                    <ul className="ml-4 mt-2">
+                    <ul className="ml-4 mt-2 space-y-2">
                       {route.subRoutes.map((subRoute, subIndex) => (
-                        <li key={subIndex} className="mb-2">
+                        <li key={subIndex}>
                           <Link
-                            to={subRoute.path ?? "#"} // Use nullish coalescing for fallback
-                            className={`block p-3 h-12 rounded transition-colors duration-300 ${
-                              selectedPath === subRoute.path ? 'bg-fourth text-white' : 'hover:bg-fourth hover:text-white'
-                            }`}
-                            onClick={() => setSelectedPath(subRoute.path ?? null)} // Use nullish coalescing
+                            to={subRoute.path ?? "#"}
+                            className={`block p-3 h-12 rounded flex items-center transition-colors duration-300 ${selectedPath === subRoute.path ? 'bg-fourth text-white' : 'hover:bg-fourth hover:text-white'}`}
+                            onClick={() => {
+                              setSelectedPath(subRoute.path ?? null);
+                              handleLinkClick(); // Close sidebar after clicking a link
+                            }}
                           >
-                            {subRoute.label}
+                            <span className="mr-4">{subRoute.icon}</span>
+                            <span className={`hidden ${!isOpen ? 'hidden' : 'block'} md:block`}>{subRoute.label}</span>
                           </Link>
                         </li>
                       ))}
@@ -111,13 +122,15 @@ const Sidebar: React.FC = () => {
                 </>
               ) : (
                 <Link
-                  to={route.path ?? "#"} // Use nullish coalescing for fallback
-                  className={`block p-3 h-12 rounded transition-colors duration-300 ${
-                    selectedPath === route.path ? 'bg-fourth text-white' : 'hover:bg-fourth hover:text-white'
-                  }`}
-                  onClick={() => setSelectedPath(route.path ?? null)} // Use nullish coalescing
+                  to={route.path ?? "#"}
+                  className={`block p-3 h-12 rounded flex items-center transition-colors duration-300 ${selectedPath === route.path ? 'bg-fourth text-white' : 'hover:bg-fourth hover:text-white'}`}
+                  onClick={() => {
+                    setSelectedPath(route.path ?? null);
+                    handleLinkClick(); // Close sidebar after clicking a link
+                  }}
                 >
-                  {route.label}
+                  <span className="mr-4">{route.icon}</span>
+                  <span className={`hidden ${!isOpen ? 'hidden' : 'block'} md:block`}>{route.label}</span>
                 </Link>
               )}
             </li>

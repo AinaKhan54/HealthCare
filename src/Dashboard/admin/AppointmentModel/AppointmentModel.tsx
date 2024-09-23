@@ -29,7 +29,13 @@ const AppointmentModel: React.FC<AppointmentModalProps> = ({ open, onClose, appo
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      PaperProps={{
+        className: 'max-w-full sm:max-w-90vw md:max-w-80vw lg:max-w-70vw', // Tailwind classes for responsiveness
+      }}
+    >
       <DialogTitle>Edit Appointment</DialogTitle>
       <DialogContent>
         <TextField

@@ -19,10 +19,11 @@ const Alert: React.FC<AlertProps> = ({ type, message, onClose }) => {
   return (
     <div className={`border-l-4 p-4 md:p-6 ${alertStyles[type]} rounded`} role="alert">
       <div className="flex flex-col md:flex-row justify-between items-center">
-        <p className="text-sm md:text-base">{message}</p>
+        <p className="text-sm md:text-base lg:text-lg">{message}</p>
         <button 
           onClick={onClose} 
-          className="mt-2 md:mt-0 text-xl md:text-2xl font-bold"
+          className="mt-2 md:mt-0 text-xl md:text-2xl font-bold focus:outline-none"
+          aria-label="Close alert"
         >
           &times;
         </button>

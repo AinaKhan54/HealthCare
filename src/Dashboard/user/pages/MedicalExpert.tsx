@@ -19,7 +19,7 @@ interface Doctor {
 const doctors: Doctor[] = [
   {
     name: 'Dr. John Doe',
-    specialty: 'Cardiologist',
+    specialty: 'Darmatologist',
     image: doctorImage1
   },
   {

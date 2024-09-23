@@ -68,7 +68,7 @@ const AllPatientDetails: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col h-screen p-10 bg-gray-300">
+    <div className="flex flex-col h-screen ml-[250px] p-10 bg-gray-300">
       <div className="flex justify-end mb-4">
         <TextField
           label="Search"
