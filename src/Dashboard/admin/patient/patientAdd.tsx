@@ -4,47 +4,54 @@ import { createPatient } from '../../../utils/userApi';
 
 // Zod validation schema
 const patientSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  firstname: z.string().min(1, 'Firstname is required'),
+  lastname: z.string().min(1, 'Lastname is required'),
+  phone: z.string().min(10, 'Phone number must be at least 10 characters long'),
   email: z.string().email('Invalid email format'),
-  mobileNumber: z.string().min(10, 'Mobile number must be at least 10 characters long'),
-  age: z.string().nonempty('Age is required'),
+  dob: z.string().nonempty('Date of birth is required'),
   gender: z.enum(['male', 'female'], {
     errorMap: () => ({ message: 'Select a valid gender' }),
   }),
   address: z.string().min(1, 'Address is required'),
-  medicalHistory: z.string().optional(),
+  medical: z.string().min(1, 'medical history is required'),
 });
 
-interface PatientsFormData {
-  name: string;
+ export interface PatientsFormData {
+  firstname: string;
+  lastname: string;
+  phone: string;
   email: string;
-  mobileNumber: string;
-  age: string; // Kept as string for date input
+  dob: string;
   gender: string;
   address: string;
-  medicalHistory: string;
+  medical: string;
 }
 
 const PatientRegistrationForm: React.FC = () => {
   const [formData, setFormData] = useState<PatientsFormData>({
-    name: '',
+    firstname: '',
+    lastname: '',
+    phone: '',
     email: '',
-    mobileNumber: '',
-    age: '',
+    dob: '',
     gender: '',
     address: '',
-    medicalHistory: '',
+    medical: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+// Handle change
+const handleChange = (
+  e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+): void => {
+  const { name, value } = e.target;
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    [name]: value,
+  }));
+};
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -55,27 +62,29 @@ const PatientRegistrationForm: React.FC = () => {
       patientSchema.parse(formData);
 
       // Prepare FormData for submission
-      const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('mobileNumber', formData.mobileNumber);
-      formDataToSend.append('age', formData.age);
-      formDataToSend.append('gender', formData.gender);
-      formDataToSend.append('address', formData.address);
-      formDataToSend.append('medicalHistory', formData.medicalHistory);
+      // const formDataToSend = new FormData();
+      // formDataToSend.append('firstname', formData.firstname);
+      // formDataToSend.append('lastname', formData.lastname);
+      // formDataToSend.append('phone', formData.phone);
+      // formDataToSend.append('email', formData.email);
+      // formDataToSend.append('dob', formData.dob);
+      // formDataToSend.append('gender', formData.gender);
+      // formDataToSend.append('address', formData.address);
+      // formDataToSend.append('medicalHistory', formData.medicalHistory);
 
       // API call to create patient
-      await createPatient(formDataToSend);
+      await createPatient(formData);
 
       // Clear form after successful submission
       setFormData({
-        name: '',
+        firstname: '',
+        lastname: '',
+        phone: '',
         email: '',
-        mobileNumber: '',
-        age: '',
+        dob: '',
         gender: '',
         address: '',
-        medicalHistory: '',
+        medical: '',
       });
 
       alert('Patient registration successful!');
@@ -99,18 +108,46 @@ const PatientRegistrationForm: React.FC = () => {
         <h2 className="text-2xl font-bold mb-6 text-purple-900 text-center">Patient Registration Form</h2>
         <div className="p-6 bg-white shadow-md rounded-lg">
           <form onSubmit={handleSubmit}>
-            {/* Name */}
+            {/* Firstname */}
             <div className="mb-4">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+              <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">Firstname</label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
+                id="firstname"
+                name="firstname"
+                value={formData.firstname}
                 onChange={handleChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               />
-              {errors['name'] && <p className="text-red-600">{errors['name']}</p>}
+              {errors['firstname'] && <p className="text-red-600">{errors['firstname']}</p>}
+            </div>
+
+            {/* Lastname */}
+            <div className="mb-4">
+              <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">Lastname</label>
+              <input
+                type="text"
+                id="lastname"
+                name="lastname"
+                value={formData.lastname}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+                          {errors['lastname'] && <p className="text-red-600">{errors['lastname']}</p>}
+            </div>
+
+            {/* Phone */}
+            <div className="mb-4">
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+              {errors['phone'] && <p className="text-red-600">{errors['phone']}</p>}
             </div>
 
             {/* Email */}
@@ -127,32 +164,18 @@ const PatientRegistrationForm: React.FC = () => {
               {errors['email'] && <p className="text-red-600">{errors['email']}</p>}
             </div>
 
-            {/* Mobile Number */}
+            {/* Date of Birth */}
             <div className="mb-4">
-              <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">Mobile Number</label>
-              <input
-                type="tel"
-                id="mobileNumber"
-                name="mobileNumber"
-                value={formData.mobileNumber}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-              />
-              {errors['mobileNumber'] && <p className="text-red-600">{errors['mobileNumber']}</p>}
-            </div>
-
-            {/* Age  */}
-            <div className="mb-4">
-              <label htmlFor="age" className="block text-sm font-medium text-gray-700">Age</label>
+              <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
               <input
                 type="date"
-                id="age"
-                name="age"
-                value={formData.age}
+                id="dob"
+                name="dob"
+                value={formData.dob}
                 onChange={handleChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               />
-              {errors['age'] && <p className="text-red-600">{errors['age']}</p>}
+              {errors['dob'] && <p className="text-red-600">{errors['dob']}</p>}
             </div>
 
             {/* Gender */}
@@ -172,7 +195,7 @@ const PatientRegistrationForm: React.FC = () => {
               {errors['gender'] && <p className="text-red-600">{errors['gender']}</p>}
             </div>
 
-            {/* Address Field */}
+            {/* Address */}
             <div className="mb-4">
               <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
               <input
@@ -188,23 +211,22 @@ const PatientRegistrationForm: React.FC = () => {
 
             {/* Medical History */}
             <div className="mb-4">
-              <label htmlFor="medicalHistory" className="block text-sm font-medium text-gray-700">Medical History</label>
-              <input
-                type="text"
-                id="medicalHistory"
-                name="medicalHistory"
-                value={formData.medicalHistory}
+              <label htmlFor="medical" className="block text-sm font-medium text-gray-700">Medical History</label>
+              <textarea
+                id="medical"
+                name="medical"
+                value={formData.medical}
                 onChange={handleChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                rows={4}
               />
-              {errors['medicalHistory'] && <p className="text-red-600">{errors['medicalHistory']}</p>}
             </div>
 
             <button
               type="submit"
-              className="w-full bg-purple-900 text-white py-2 px-4 rounded-md hover:bg-purple-700"
+              className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700"
             >
-              Submit
+              Register Patient
             </button>
           </form>
         </div>

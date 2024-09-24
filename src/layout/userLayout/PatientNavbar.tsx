@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../../assets/Images/logo3.png";
-import profileIcon from "../../assets/Images/user1.png";
 
 const PatientNavbar: React.FC = () => {
     const [patientsDropdownOpen, setPatientsDropdownOpen] = useState(false);
     const [departmentDropdownOpen, setDepartmentDropdownOpen] = useState(false);
-    const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false); // State for the hamburger menu
 
-    const userName: string = "John Doe";
+    const patientsDropdownRef = useRef<HTMLDivElement>(null);
+    const departmentDropdownRef = useRef<HTMLDivElement>(null);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (patientsDropdownRef.current && !patientsDropdownRef.current.contains(event.target as Node)) {
+            setPatientsDropdownOpen(false);
+        }
+        if (departmentDropdownRef.current && !departmentDropdownRef.current.contains(event.target as Node)) {
+            setDepartmentDropdownOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <nav className="sticky top-0 bg-[#e6e6fa] py-2 px-4 lg:px-6 z-50 shadow-md">
@@ -35,15 +50,14 @@ const PatientNavbar: React.FC = () => {
                     {/* For Patients Dropdown */}
                     <div
                         className="relative lg:inline-block"
-                        onMouseEnter={() => setPatientsDropdownOpen(true)}
-                        onMouseLeave={() => setPatientsDropdownOpen(false)}
+                        ref={patientsDropdownRef}
                     >
-                        <Link
-                            to="/home"
+                        <button
+                            onClick={() => setPatientsDropdownOpen(prev => !prev)}
                             className="block lg:inline-block text-purple-800 text-lg px-4 py-2 rounded-md hover:bg-purple-800 hover:text-white transition duration-300"
                         >
                             For Patients
-                        </Link>
+                        </button>
                         {patientsDropdownOpen && (
                             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
                                 <Link
@@ -65,15 +79,14 @@ const PatientNavbar: React.FC = () => {
                     {/* Department Dropdown */}
                     <div
                         className="relative lg:inline-block"
-                        onMouseEnter={() => setDepartmentDropdownOpen(true)}
-                        onMouseLeave={() => setDepartmentDropdownOpen(false)}
+                        ref={departmentDropdownRef}
                     >
-                        <Link
-                            to="/home"
+                        <button
+                            onClick={() => setDepartmentDropdownOpen(prev => !prev)}
                             className="block lg:inline-block text-purple-800 text-lg px-4 py-2 rounded-md hover:bg-purple-800 hover:text-white transition duration-300"
                         >
                             Department
-                        </Link>
+                        </button>
                         {departmentDropdownOpen && (
                             <div className="absolute right-0 mt-2 w-full sm:w-72 bg-white border border-gray-200 rounded-md shadow-lg z-50">
                                 <Link
@@ -171,45 +184,11 @@ const PatientNavbar: React.FC = () => {
                         Contact Us
                     </Link>
                 </div>
-
-                {/* User Profile */}
-                <div className="relative flex items-center">
-                    <div
-                        className="flex items-center space-x-3 cursor-pointer"
-                        onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                    >
-                        <span className="text-purple-800 text-lg font-medium hidden sm:block">{userName}</span>
-                        <img
-                            src={profileIcon}
-                            alt="user profile"
-                            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-purple-800 cursor-pointer hover:border-purple-600 transition duration-300"
-                        />
-                    </div>
-                    {profileDropdownOpen && (
-                        <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50 mt-[170px]">
-                            <Link
-                                to="/login"
-                                className="block px-4 py-2 text-purple-800 text-center hover:bg-purple-300 rounded-lg transition duration-300"
-                                onClick={() => setProfileDropdownOpen(false)}
-                            >
-                                Login
-                            </Link>
-                            <Link
-                                to="/logout"
-                                className="block px-4 py-2 text-purple-800 text-center hover:bg-purple-300 rounded-lg transition duration-300"
-                                onClick={() => setProfileDropdownOpen(false)}
-                            >
-                                Logout
-                            </Link>
-                            <Link
-                                to="/profile"
-                                className="block px-4 py-2 text-purple-800 text-center hover:bg-purple-300 rounded-lg transition duration-300"
-                                onClick={() => setProfileDropdownOpen(false)}
-                            >
-                                View Profile
-                            </Link>
-                        </div>
-                    )}
+                {/* Glowing Button (Visible only on larger screens) */}
+                <div className="ml-4">
+                    <Link to="/make-appointment" className="hidden lg:inline-block relative px-6 py-2 text-white bg-purple-600 rounded-md mr-[100px]">
+                        <span className="relative">Book an Appointment</span>
+                    </Link>
                 </div>
             </div>
         </nav>

@@ -55,13 +55,13 @@ function AppLayout({ children }: AppLayoutProps) {
   // Determine if the route is for the admin area
   const isAdminRoute = location.pathname.startsWith('/admin');
 
-  // Redirect if necessary
-  if (isAdminRoute && !auth) {
-    return <Navigate to="/login" replace />;
-  } else if (!isAdminRoute && auth && location.pathname === '/') {
-    // Redirect authenticated users to /admin/home-page if they try to access the root
-    return <Navigate to="/admin/home-page" replace />;
-  }
+  // // Redirect if necessary
+  // if (isAdminRoute && !auth) {
+  //   return <Navigate to="/login" replace />;
+  // } else if (!isAdminRoute && auth && location.pathname === '/') {
+  //   // Redirect authenticated users to /admin/home-page if they try to access the root
+  //   return <Navigate to="/admin/home-page" replace />;
+  // }
 
   const hideNavbarAndSidebar = 
     location.pathname === '/login' || 
@@ -144,10 +144,17 @@ function App() {
             <Route path="/pathology" element={<Pathology />} />
             <Route path="/pharmacy" element={<Pharmacy />} />
             <Route path="/doctor1" element={<DoctorProfile />} />
+            <Route path="/admin/home-page" element={<Home />} />
+              <Route path="/admin/doctors" element={<Doctors />} />
+              <Route path="/admin/appointment" element={<Appointment />} />
+              <Route path="/admin/patients-all-details" element={<AllPatientDetails />} />
+              <Route path="/admin/doctor/doctor-schedule" element={<DoctorSchedule />} />
+              <Route path="/admin/doctor/doctor-all-doctor" element={<AllDoctorDetails />} />
+              <Route path="/admin/messages" element={<Messages />} />
             
 
             {/* Protected Routes */}
-            <Route element={<ProtectedRoute />}>
+            {/* <Route element={<ProtectedRoute />}>
               <Route path="/admin/home-page" element={<Home />} />
               <Route path="/admin/doctors" element={<Doctors />} />
               <Route path="/admin/appointment" element={<Appointment />} />
@@ -155,7 +162,7 @@ function App() {
               <Route path="/admin/doctor/doctor-schedule" element={<DoctorSchedule />} />
               <Route path="/admin/doctor/doctor-all-doctor" element={<AllDoctorDetails />} />
               <Route path="/admin/messages" element={<Messages />} />
-            </Route>
+            </Route> */}
           </Routes>
         </AppLayout>
       </ErrorBoundary>

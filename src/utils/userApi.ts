@@ -3,7 +3,7 @@ import { Appointment } from '../Dashboard/user/pages/MakeAppointment';
 import { MessageData } from '../Dashboard/admin/messagesModel/messages';
 import { AppointmentData } from '../Dashboard/admin/Pages/appointment'; 
 import { DoctorData } from '../Dashboard/admin/doctor/AddDoctor';
-import { error } from 'console';
+import { PatientsFormData } from '../Dashboard/admin/patient/patientAdd';
 
 // Base API URL
 const API_URL = 'http://localhost:5000/api';
@@ -114,7 +114,7 @@ export const fetchMessages = async () => {
 // Delete Message
 export const deleteMessage = async (id: string) => {
   try {
-    const response = await axiosInstance.delete(`${API_URL}/messages/${id}`);
+    const response = await axiosInstance.delete(`${API_URL}/messages/messages/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error deleting message:', error);
@@ -125,7 +125,7 @@ export const deleteMessage = async (id: string) => {
 // Update Message
 export const updateMessage = async (id: string, updatedMessage: MessageData) => {
   try {
-    const response = await axiosInstance.put(`${API_URL}/messages/${id}`, updatedMessage);
+    const response = await axiosInstance.put(`${API_URL}/messages/messages/${id}`, updatedMessage);
     return response.data;
   } catch (error) {
     console.error('Error updating message:', error);
@@ -179,7 +179,7 @@ export const updateDoctor = async (id: string, updatedDoctor: DoctorData) => {
 
 
 // Create Patient
-export const createPatient = async (patientData: FormData) => {
+export const createPatient = async (patientData: PatientsFormData) => {
   try {
     const response = await axiosInstance.post(`${API_URL}/patients/create`, patientData);
     return response.data;

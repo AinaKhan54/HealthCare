@@ -26,6 +26,7 @@ const doctors: Doctor[] = [
     name: 'Dr. Jane Smith',
     specialty: 'Neurologist',
     image: doctorImage2
+  
   },
   {
     name: 'Dr. Alice Johnson',

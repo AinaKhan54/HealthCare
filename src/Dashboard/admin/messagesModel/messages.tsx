@@ -66,7 +66,7 @@ const Messages: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen p-10 ml-[250px] bg-gray-300">
+    <div className="flex flex-col h-screen p-10 ml-[250px]">
       <div className="flex justify-end mb-4">
         <TextField
           label="Search"
@@ -78,33 +78,44 @@ const Messages: React.FC = () => {
       </div>
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
-            <TableRow sx={{ backgroundColor: 'purple' }}> {/* Set the header row background color */}
-              <TableCell sx={{ color: 'white' }}>Name</TableCell> {/* Set text color to white */}
-              <TableCell sx={{ color: 'white' }}>Email</TableCell>
-              <TableCell sx={{ color: 'white' }}>Message</TableCell>
-              <TableCell sx={{ color: 'white' }}>Actions</TableCell>
-            </TableRow>
-          </TableHead>
+        <TableHead>
+  <TableRow sx={{ backgroundColor: 'purple' }}>
+    <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1.1rem', fontFamily: 'Arial, sans-serif' }}>Name</TableCell>
+    <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1.1rem', fontFamily: 'Arial, sans-serif' }}>Email</TableCell>
+    <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1.1rem', fontFamily: 'Arial, sans-serif' }}>Message</TableCell>
+    <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1.1rem', fontFamily: 'Arial, sans-serif' }}>Actions</TableCell>
+  </TableRow>
+</TableHead>
+
           <TableBody>
-            {rows
-              .filter(row => row.name.toLowerCase().includes(searchQuery))
-              .map(row => (
-                <TableRow key={row.id}>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>{row.message}</TableCell>
-                  <TableCell>
-                    <Tooltip title="Delete">
-                      <DeleteOutlineIcon onClick={() => handleDelete(row.id)} className="cursor-pointer mr-2" />
-                    </Tooltip>
-                    <Tooltip title="Edit">
-                      <EditOutlinedIcon onClick={() => handleEdit(row)} className="cursor-pointer" />
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
+  {rows
+    .filter(row => row.name.toLowerCase().includes(searchQuery))
+    .map(row => (
+      <TableRow key={row.id} className="hover:bg-purple-300"> {/* Add hover class here */}
+        <TableCell>{row.name}</TableCell>
+        <TableCell>{row.email}</TableCell>
+        <TableCell>{row.message}</TableCell>
+        <TableCell>
+          <Tooltip title="Delete">
+            <DeleteOutlineIcon
+              onClick={() => handleDelete(row.id)}
+              className="cursor-pointer mr-2 transform transition-transform duration-200 hover:scale-110" // Add zoom effect here
+              sx={{ color: 'red' }} // Set the delete icon color to red
+            />
+          </Tooltip>
+          <Tooltip title="Edit">
+            <EditOutlinedIcon
+              onClick={() => handleEdit(row)}
+              className="cursor-pointer transform transition-transform duration-200 hover:scale-110" // Add zoom effect here
+              sx={{ color: 'blue' }} // Set the edit icon color to blue
+            />
+          </Tooltip>
+        </TableCell>
+      </TableRow>
+    ))}
+</TableBody>
+
+
         </Table>
       </TableContainer>
       {open && currentMessage && (
