@@ -1,8 +1,9 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { z } from 'zod';
 import { createAppointment } from "../../../utils/userApi";
-import PatientNavbar from "../../../layout/userLayout/PatientNavbar";
+import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import Image from "../../../assets/Images/appoint.png"; // Adjust the path to your image
+import Footer from '../../../layout/userLayout/footer';
 
 // Zod schema for appointment form validation
 const appointmentSchema = z.object({
@@ -88,126 +89,134 @@ const MakeAppointment: React.FC = () => {
 
   return (
     <div className="relative flex flex-col h-screen">
-      <PatientNavbar />
-      <div className="flex-grow p-6 w-full max-w-2xl md:ml-[240px]">
-        <h2 className="text-2xl font-bold text-purple-900 text-center mb-4">Make an Appointment</h2>
-        {success && <p className="text-green-600">{success}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-            />
-            {error.name && <p className="text-red-600">{error.name}</p>}
-          </div>
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-            />
-            {error.email && <p className="text-red-600">{error.email}</p>}
-          </div>
-          <div>
-            <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">Mobile Number</label>
-            <input
-              type="text"
-              id="mobileNumber"
-              name="mobileNumber"
-              value={formData.mobileNumber}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-            />
-            {error.mobileNumber && <p className="text-red-600">{error.mobileNumber}</p>}
-          </div>
-          <div>
-            <label htmlFor="adharNo" className="block text-sm font-medium text-gray-700">Aadhar No</label>
-            <input
-              type="text"
-              id="adharNo"
-              name="adharNo"
-              value={formData.adharNo}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-            />
-            {error.adharNo && <p className="text-red-600">{error.adharNo}</p>}
-          </div>
-          <div>
-            <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
-            <select
-              id="gender"
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+     <PatientNavbar />
+      <div className="flex-grow flex flex-col-reverse md:flex-row p-6 w-full max-w-2xl md:ml-[240px]">
+        {/* Form Section */}
+        <div className="w-full w-[1400px] ">
+          <h2 className="text-2xl font-bold text-purple-900 text-center mb-4">Make an Appointment</h2>
+          {success && <p className="text-green-600">{success}</p>}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Form Fields */}
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              />
+              {error.name && <p className="text-red-600">{error.name}</p>}
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              />
+              {error.email && <p className="text-red-600">{error.email}</p>}
+            </div>
+            <div>
+              <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">Mobile Number</label>
+              <input
+                type="text"
+                id="mobileNumber"
+                name="mobileNumber"
+                value={formData.mobileNumber}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              />
+              {error.mobileNumber && <p className="text-red-600">{error.mobileNumber}</p>}
+            </div>
+            <div>
+              <label htmlFor="adharNo" className="block text-sm font-medium text-gray-700">Aadhar No</label>
+              <input
+                type="text"
+                id="adharNo"
+                name="adharNo"
+                value={formData.adharNo}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              />
+              {error.adharNo && <p className="text-red-600">{error.adharNo}</p>}
+            </div>
+            <div>
+              <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+              <select
+                id="gender"
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              {error.gender && <p className="text-red-600">{error.gender}</p>}
+            </div>
+            <div>
+              <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              />
+              {error.date && <p className="text-red-600">{error.date}</p>}
+            </div>
+            <div>
+              <label htmlFor="time" className="block text-sm font-medium text-gray-700">Time</label>
+              <input
+                type="time"
+                id="time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              />
+              {error.time && <p className="text-red-600">{error.time}</p>}
+            </div>
+            <div>
+              <label htmlFor="reason" className="block text-sm font-medium text-gray-700">Reason for Appointment</label>
+              <textarea
+                id="reason"
+                name="reason"
+                value={formData.reason}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              />
+              {error.reason && <p className="text-red-600">{error.reason}</p>}
+            </div>
+            {error.general && <p className="text-red-600">{error.general}</p>}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-purple-600 text-white p-2 rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
             >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            {error.gender && <p className="text-red-600">{error.gender}</p>}
-          </div>
-          <div>
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-            />
-            {error.date && <p className="text-red-600">{error.date}</p>}
-          </div>
-          <div>
-            <label htmlFor="time" className="block text-sm font-medium text-gray-700">Time</label>
-            <input
-              type="time"
-              id="time"
-              name="time"
-              value={formData.time}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-            />
-            {error.time && <p className="text-red-600">{error.time}</p>}
-          </div>
-          <div>
-            <label htmlFor="reason" className="block text-sm font-medium text-gray-700">Reason for Appointment</label>
-            <textarea
-              id="reason"
-              name="reason"
-              value={formData.reason}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-            />
-            {error.reason && <p className="text-red-600">{error.reason}</p>}
-          </div>
-          {error.general && <p className="text-red-600">{error.general}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-purple-600 text-white p-2 rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          >
-            {loading ? 'Submitting...' : 'Make Appointment'}
-          </button>
-        </form>
+              {loading ? 'Loading...' : 'Submit'}
+            </button>
+          </form>
+          <img
+          src={Image}
+          alt="Decorative"
+          className="absolute bottom-4 right-4 hidden lg:block w-90 h-90 object-cover rounded-lg"
+        />
+        </div>
       </div>
-      <div className="hidden md:block fixed top-1/4 right-6 z-10">
-        <img src={Image} alt="Make Appointment" className="w-[490px] h-[490px]" />
+      <div>
+        <Footer />
       </div>
     </div>
   );
 };
 
 export default MakeAppointment;
- 

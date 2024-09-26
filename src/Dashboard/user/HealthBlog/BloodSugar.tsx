@@ -1,6 +1,7 @@
 import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import Image from "../../../assets/Images/BloodSugar.jpg";
+import Footer from '../../../layout/userLayout/footer';
 
 const BloodSugar: React.FC = () => {
   return (
@@ -64,6 +65,9 @@ const BloodSugar: React.FC = () => {
         <p>
           There is a high prevalence of myths about diabetes which may be associated with poor early health-seeking behavior and poor adherence to treatment. Misconceptions about diabetes can hinder people from seeking proper treatment. Educating people about diabetes and its treatment options is crucial in controlling and preventing the disease.
         </p>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

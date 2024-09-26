@@ -1,5 +1,6 @@
 import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
+import Footer from '../../../layout/userLayout/footer';
 import Image from "../../../assets/Images/about.png";
 
 const About: React.FC = () => {
@@ -91,6 +92,9 @@ const About: React.FC = () => {
             </ul>
           </div>
         </div>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

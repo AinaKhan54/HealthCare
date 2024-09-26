@@ -2,6 +2,7 @@ import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import DepartmentCard from '../../../Components/Department-Component/DepartmentCard';
 import Image from "../../../assets/Images/Paediatric.jpg";
+import Footer from '../../../layout/userLayout/footer';
 
 const departments = [
   { name: 'Accident & Emergency', link: '/accident-emergency' },
@@ -100,6 +101,9 @@ const Pediatries: React.FC = () => {
             </ul>
           </div>
         </div>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

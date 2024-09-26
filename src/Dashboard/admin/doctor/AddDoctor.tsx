@@ -235,7 +235,7 @@ const AddDoctor: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full mt-4 p-3 text-white bg-blue-600 rounded-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`w-full mt-4 p-3 text-white bg-purple-600 rounded-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           {loading ? 'Adding...' : 'Add Doctor'}
         </button>

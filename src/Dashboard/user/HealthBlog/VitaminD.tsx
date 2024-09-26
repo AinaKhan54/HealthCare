@@ -1,6 +1,7 @@
 import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import Image from "../../../assets/Images/vitaminD.jpeg";
+import Footer from '../../../layout/userLayout/footer';
 
 const VitaminD: React.FC = () => {
   return (
@@ -69,6 +70,9 @@ const VitaminD: React.FC = () => {
       <p className="text-lg text-gray-700 leading-relaxed">
         Vitamin D is essential for the proper health of the body. Many people have vitamin D levels below the recommended level for optimal health. Vitamin D is mostly obtained by UVB radiation worldwide in the form of sunlight and dermal vitamin D production. Revised recommended dietary intake levels for vitamin D are needed to be advised to patients and physicians alike.
       </p>
+    </div>
+    <div>
+      <Footer />
     </div>
     </div>
   );

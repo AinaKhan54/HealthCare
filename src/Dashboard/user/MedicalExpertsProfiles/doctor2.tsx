@@ -58,7 +58,7 @@ const DoctorDermatology: React.FC = () => {
                 {['mon', 'tue', 'wed', 'thu', 'fri'].map((day, index) => (
                   <tr key={index} className="border-t">
                     <td className="px-4 py-2 text-gray-600 text-right ml-4 capitalize">{day}</td>
-                    <td className="px-4 py-2 text-right text-gray-600">10:00am - 2:00pm</td>
+                    <td className="px-4 py-2 text-right text-gray-600">11:00am - 2:00pm</td>
                     <td className="px-4 py-2"></td>
                   </tr>
                 ))}

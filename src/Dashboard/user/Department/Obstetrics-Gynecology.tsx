@@ -3,6 +3,7 @@ import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import DepartmentCard from '../../../Components/Department-Component/DepartmentCard';
 import Image from "../../../assets/Images/gyno.jpg";
 import DoctorImage from "../../../assets/Images/doctor5.jpg";
+import Footer from '../../../layout/userLayout/footer';
 
 const departments = [
   { name: 'Accident & Emergency', link: '/accident-emergency' },
@@ -146,6 +147,9 @@ const ObstetricsGynecology: React.FC = () => {
             </button>
           </div>
         </div>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

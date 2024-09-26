@@ -1,8 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import doctorImage from "../../../assets/Images/doctor4.jpg"; // Update the image path if necessary
 
 const DoctorObstetricsGynecology: React.FC = () => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  const handleBookAppointment = () => {
+    navigate('/make-appointment'); // Replace with the correct route for booking appointments
+  };
+
   return (
     <div>
       <PatientNavbar />
@@ -24,7 +31,10 @@ const DoctorObstetricsGynecology: React.FC = () => {
 
             {/* Booking Button */}
             <div className="mt-6 flex justify-center">
-              <button className="bg-purple-700 hover:bg-purple-900 text-white font-bold py-2 px-6 rounded-full">
+              <button 
+                onClick={handleBookAppointment} // Add onClick handler
+                className="bg-purple-700 hover:bg-purple-900 text-white font-bold py-2 px-6 rounded-full"
+              >
                 Book an Appointment
               </button>
             </div>
@@ -48,7 +58,7 @@ const DoctorObstetricsGynecology: React.FC = () => {
                 {['mon', 'tue', 'wed', 'thu', 'fri'].map((day, index) => (
                   <tr key={index} className="border-t">
                     <td className="px-4 py-2 text-gray-600 text-right ml-4 capitalize">{day}</td>
-                    <td className="px-4 py-2 text-right text-gray-600">10:00am - 2:00pm</td>
+                    <td className="px-4 py-2 text-right text-gray-600">11:00am - 4:00pm</td>
                     <td className="px-4 py-2"></td>
                   </tr>
                 ))}

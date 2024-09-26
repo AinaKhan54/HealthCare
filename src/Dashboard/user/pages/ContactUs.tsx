@@ -3,6 +3,7 @@ import { Toaster, toast } from 'react-hot-toast'; // Importing toast and Toaster
 import PatientNavbar from "../../../layout/userLayout/PatientNavbar";
 import contactImage from "../../../../src/assets/Images/Contact Us.png";
 import { sendMessage } from "../../../utils/userApi";
+import Footer from '../../../layout/userLayout/footer';
 import { z } from 'zod';
 
 // Zod schema for form validation
@@ -63,8 +64,8 @@ const ContactUs: React.FC = () => {
           <div className="lg:w-1/2 lg:ml-20">
             <h2 className="text-2xl font-semibold mb-4">Our Address</h2>
             <p className="mb-2">1234 Health St.</p>
-            <p className="mb-2">Wellness City, ST 12345</p>
-            <p className="mb-2">Phone: (123) 456-7890</p>
+            <p className="mb-2">Medical City,, ST 12345</p>
+            <p className="mb-2">Phone: 02945684279</p>
             <p className="mb-2">Email: <a href="mailto:contact@healthcare.com">contact@healthcare.com</a></p>
           </div>
           <div className="lg:w-1/2 lg:ml-20">
@@ -112,6 +113,9 @@ const ContactUs: React.FC = () => {
             </form>
           </div>
         </div>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

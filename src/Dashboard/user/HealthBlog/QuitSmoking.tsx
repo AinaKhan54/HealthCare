@@ -1,6 +1,7 @@
 import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import Image from "../../../assets/Images/AviodSmoking1.jpeg"
+import Footer from '../../../layout/userLayout/footer';
 
 const QuitSmoking: React.FC = () => {
   return (
@@ -67,6 +68,9 @@ const QuitSmoking: React.FC = () => {
           Quitting smoking is beneficial at any age. It improves health and quality of life, reduces the risk of premature death, and can increase life expectancy by up to a decade. Despite many attempts to quit each year, less than half of smokers succeed. Embrace the journey towards a healthier, smoke-free life.
         </p>
       </div>
+    </div>
+    <div>
+      <Footer />
     </div>
     </div>
   );

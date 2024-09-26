@@ -1,5 +1,6 @@
 import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
+import Footer from '../../../layout/userLayout/footer';
 
 // Import images
 import balancedDietImage from "../../../assets/Images/deit.png";
@@ -12,6 +13,7 @@ import hygieneImage from "../../../assets/Images/hygiene1.jpg";
 import mentalHealthImage from "../../../assets/Images/mental-health.jpeg";
 import healthScreeningsImage from "../../../assets/Images/health-screenings.jpg";
 import positiveAttitudeImage from "../../../assets/Images/positive-attitude.jpg";
+
 
 const HealthyLifeStyle: React.FC = () => {
   const sections = [
@@ -184,6 +186,9 @@ const HealthyLifeStyle: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

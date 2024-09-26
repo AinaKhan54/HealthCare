@@ -2,6 +2,7 @@ import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import DepartmentCard from '../../../Components/Department-Component/DepartmentCard';
 import Image from '../../../assets/Images/care3.jpg';
+import Footer from '../../../layout/userLayout/footer';
 
 const departments = [
   { name: 'Accident & Emergency', link: '/accident-emergency' },
@@ -83,6 +84,9 @@ const InternalMedicine: React.FC = () => {
             <p className="mt-4">For more information or to schedule an appointment, please contact our Internal Medicine Department led by Dr. Anjali Mehta, Consultant in Internal Medicine.</p>
           </div>
         </div>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

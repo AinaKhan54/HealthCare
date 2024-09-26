@@ -1,6 +1,7 @@
 import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import Image from "../../../assets/Images/Child.jpeg";
+import Footer from '../../../layout/userLayout/footer';
 
 const ChildObesity: React.FC = () => {
   return (
@@ -8,8 +9,8 @@ const ChildObesity: React.FC = () => {
       <PatientNavbar />
       <div className="flex flex-wrap">
         {/* First Section: Title, First Paragraph, and Image */}
-        <div className="w-full lg:w-1/2 p-4">
-          <h5 className="text-xl font-bold mb-4">Childhood Obesity</h5>
+        <div className="w-full lg:w-1/2 p-4 ">
+          <h5 className="text-3xl font-bold mb-4">Childhood Obesity</h5>
           <p className="mb-4">
             Childhood obesity, also referred to as childhood obesity risk or increased risk of childhood obesity, is an increasingly common condition. It is not just a problem among the affluent; most middle-class households are now affected. Obesity among children increases their chances of developing type 2 diabetes, high blood pressure, heart disease, and certain cancers. In fact, according to the Centers for Disease Control and Prevention (CDC), over 15.5% of Indian children are obese or overweight. The World Health Organization defines child obesity as a body mass index (BMI) equal to or greater than the 85th percentile for age and sex. There are many causes of childhood obesity that range from genetics to environment. This article lists the top 7 causes of childhood obesity along with some effective tips on how you can prevent your child from getting fat.
           </p>
@@ -22,7 +23,7 @@ const ChildObesity: React.FC = () => {
 
       {/* Remaining Content: Full-Width */}
       <div className="w-full p-4">
-        <h2 className="text-xl font-bold mt-6">Causes:</h2>
+        <h2 className="text-2xl font-bold mt-[-40px]">Causes:</h2>
         <h3 className="text-lg font-semibold mt-4">Genetics and Obesity</h3>
         <p>
           Genetics is one of the strongest factors associated with obesity. In fact, it is estimated that 68% of obesity is caused by genetics. Obesity can also be caused by an under-developed “hunger’s brake” system in the brain. Add to this, certain medications such as antidepressants, painkillers, seizure medicines, anti-psychotics, and anti-anxiety medications. Another cause of childhood obesity is lipodystrophy, a condition that causes a person’s fat tissue to be severely under-developed.
@@ -56,6 +57,9 @@ const ChildObesity: React.FC = () => {
         <p>
           Childhood obesity has become a serious health concern among children. There are many reasons behind this, including genetics and environment. In order to prevent childhood obesity, it is important to identify the causes of childhood obesity and implement effective preventative measures. You can prevent childhood obesity by setting a healthy example for your child. Make sure you eat a balanced diet and drink lots of water. You can also encourage your child to be physically active by going for walks with him/her and encouraging them to play sports. These are some effective tips that can help prevent childhood obesity. Childhood obesity is a serious issue that requires proper attention. Fortunately, this article has provided you with some key insights regarding the causes of childhood obesity in children, as well as effective tips on how you can prevent your child from getting fat.
         </p>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

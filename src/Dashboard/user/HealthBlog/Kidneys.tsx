@@ -1,6 +1,7 @@
 import React from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import kidneysImage from "../../../assets/Images/kidneys.jpg"; 
+import Footer from '../../../layout/userLayout/footer';
 
 const Kidneys: React.FC = () => {
   return (
@@ -59,6 +60,9 @@ const Kidneys: React.FC = () => {
         <p className="text-lg text-gray-700">
           The kidneys are vital organs in the human body, playing a key role in controlling blood pressure, blood sugar levels, and reducing the risk of heart disease. To maintain kidney health, adopt a balanced diet, exercise regularly, and seek prompt medical attention for any kidney-related issues. Taking these steps will help ensure your kidneys function effectively and support your overall well-being.
         </p>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

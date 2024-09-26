@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
+import Footer from '../../../layout/userLayout/footer';
 import HealthBlogCard from '../../../Components/CardComponent/HealthBlogCard';
 import Image1 from "../../../assets/Images/healthy.jpg";
 import Image2 from "../../../assets/Images/vitaminD.jpeg";
@@ -63,6 +64,9 @@ const HealthBlog: React.FC = () => {
             date="September 8, 2024"
           />
         </Link>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent } from 'react';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
 import DoctorCard from '../../../Components/CardComponent/DoctorCard';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import Footer from '../../../layout/userLayout/footer';
 
 // Importing local images
 import doctorImage1 from "../../../assets/Images/doctor1.jpg";
@@ -95,6 +96,9 @@ const MedicalExperts: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

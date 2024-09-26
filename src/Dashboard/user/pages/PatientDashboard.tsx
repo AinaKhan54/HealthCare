@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PatientNavbar from '../../../layout/userLayout/PatientNavbar';
+import Footer from '../../../layout/userLayout/footer';
 import Image from "../../../assets/Images/pic2.png"; 
 import DocImage from "../../../assets/Images/pic5.png";
 import "../../../..//src/animation.css";
@@ -108,7 +109,7 @@ const PatientDashboard: React.FC = () => {
             {/* Departments Blocks */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-2 md:mx-6">
                 {/* Block 1 */}
-                <div className="p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col justify-center items-center">
+                <div className="p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col justify-center items-center mb-8">
                     <img 
                         src={Img1} 
                         alt="Pathology"
@@ -123,7 +124,7 @@ const PatientDashboard: React.FC = () => {
                     </button>
                 </div>
                 {/* Block 2 */}
-                <div className="p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col justify-center items-center">
+                <div className="p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col justify-center items-center mb-8">
                     <img 
                         src={Img2} 
                         alt="Dermatology"
@@ -138,7 +139,7 @@ const PatientDashboard: React.FC = () => {
                     </button>
                 </div>
                 {/* Block 3 */}
-                <div className="p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col justify-center items-center">
+                <div className="p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col justify-center items-center mb-8">
                     <img 
                         src={Img3} 
                         alt="Pharmacy"
@@ -153,7 +154,7 @@ const PatientDashboard: React.FC = () => {
                     </button>
                 </div>
                 {/* Block 4 */}
-                <div className="p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col justify-center items-center">
+                <div className="p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col justify-center items-center mb-8">
                     <img 
                         src={Img4} 
                         alt="Radiology"
@@ -167,6 +168,9 @@ const PatientDashboard: React.FC = () => {
                         Read More
                     </button>
                 </div>
+            </div>
+            <div>
+                <Footer />
             </div>
         </div>
     );
