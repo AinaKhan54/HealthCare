@@ -42,8 +42,11 @@ import Pharmacy from './Dashboard/user/Department/Pharmacy';
 import ProtectedRoute from "./auth/ProtectedRoutes"; // Adjust the path as needed
 import PatientRegistrationForm from './Dashboard/admin/patient/patientAdd';
 import DoctorProfile from './Dashboard/user/MedicalExpertsProfiles/doctor1';
+import DoctorDermatology from './Dashboard/user/MedicalExpertsProfiles/doctor2';
+import DoctorRadiology from './Dashboard/user/MedicalExpertsProfiles/doctor3';
+import DoctorObstetricsGynecology from './Dashboard/user/MedicalExpertsProfiles/doctor4';
+import DoctorAnesthesiology from './Dashboard/user/MedicalExpertsProfiles/doctor1';
 import { RootState } from './store';
-
 interface AppLayoutProps {
   children: React.ReactNode;
 }
@@ -91,7 +94,11 @@ function AppLayout({ children }: AppLayoutProps) {
     location.pathname === "/internal-medicine" ||
     location.pathname === "/pathology" ||
     location.pathname === "/pharmacy" ||
-    location.pathname === "/doctor1";
+    location.pathname === "/doctor1" ||
+    location.pathname === "/doctor/dermatology"||
+    location.pathname === "/doctor/radiology"||
+    location.pathname === "/doctor/obstetrics-gynecology"||
+    location.pathname === "/doctor/anesthesiology";
 
   return (
     <>
@@ -144,6 +151,10 @@ function App() {
             <Route path="/pathology" element={<Pathology />} />
             <Route path="/pharmacy" element={<Pharmacy />} />
             <Route path="/doctor1" element={<DoctorProfile />} />
+            <Route path="/doctor/dermatology" element={<DoctorDermatology/>} />
+            <Route path="/doctor/radiology" element={<DoctorRadiology/>} />
+            <Route path="/doctor/obstetrics-gynecology" element={<DoctorObstetricsGynecology/>} />
+            <Route path="/doctor/anesthesiology" element={<DoctorAnesthesiology/>} />
             <Route path="/admin/home-page" element={<Home />} />
               <Route path="/admin/doctors" element={<Doctors />} />
               <Route path="/admin/appointment" element={<Appointment />} />
@@ -151,6 +162,7 @@ function App() {
               <Route path="/admin/doctor/doctor-schedule" element={<DoctorSchedule />} />
               <Route path="/admin/doctor/doctor-all-doctor" element={<AllDoctorDetails />} />
               <Route path="/admin/messages" element={<Messages />} />
+            
             
 
             {/* Protected Routes */}

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import logo from "../../assets/Images/logo3.png";
-import userProfile from "../../assets/Images/user1.png";
 import { FiSearch, FiBell } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,17 +12,12 @@ const Navbar: React.FC = () => {
     const isLoggedIn = useSelector((state: RootState) => state.auth.isAuthenticated);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-
-    // Toggle dropdown menu
-    const handleProfileClick = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
+    const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(false);
+    const notificationRef = useRef<HTMLDivElement | null>(null);
 
     // Handle user logout
     const handleLogout = () => {
         dispatch(logout());
-        setIsDropdownOpen(false);
         navigate('/login');
     };
 
@@ -32,11 +26,27 @@ const Navbar: React.FC = () => {
         navigate('/login');
     };
 
-    // Navigate to profile page
-    const handleViewProfile = () => {
-        navigate('/profile');
-        setIsDropdownOpen(false);
+    // Toggle notification dropdown
+    const handleNotificationClick = () => {
+        setIsNotificationOpen(!isNotificationOpen);
     };
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+                setIsNotificationOpen(false);
+            }
+        };
+
+        // Add event listener to detect clicks
+        document.addEventListener('mousedown', handleClickOutside);
+        
+        // Cleanup event listener on component unmount
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <nav className='sticky top-0 z-50 border border-gray-300 bg-tertiary flex items-center justify-between p-4 w-full'>
@@ -55,41 +65,48 @@ const Navbar: React.FC = () => {
             </div>
             <div className='relative flex items-center space-x-4'>
                 <div className='relative flex items-center justify-center w-10 h-10 rounded-full bg-tertiary hover:bg-fourth transition duration-300 ease-in-out'>
-                    <FiBell className='text-purple-900' size={24} />
-                </div>
-                <div className='relative'>
-                    <img
-                        src={userProfile}
-                        alt="User Profile"
-                        className="w-10 h-10 rounded-full cursor-pointer"
-                        onClick={handleProfileClick}
+                    <FiBell 
+                        className='text-purple-900 cursor-pointer' 
+                        size={24} 
+                        onClick={handleNotificationClick} 
                     />
-                    {isDropdownOpen && (
-                        <div className='absolute right-0  w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50'>
-                            {isLoggedIn ? (
-                                <>
-                                    <button
-                                        onClick={handleViewProfile}
-                                        className='block w-full text-center px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 mb-2'
-                                    >
-                                        View Profile
-                                    </button>
-                                    <button
-                                        onClick={handleLogout}
-                                        className='block w-full text-center px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600'
-                                    >
-                                        Logout
-                                    </button>
-                                </>
-                            ) : (
-                                <button
-                                    onClick={handleLogin}
-                                    className='block w-full text-center px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600'
-                                >
-                                    Login
-                                </button>
-                            )}
+                    {isNotificationOpen && (
+                        <div 
+                            ref={notificationRef} 
+                            className='absolute right-0 w-72 bg-white border border-gray-200 rounded-md shadow-lg z-50 mt-[210px]'
+                        >
+                            <div className='p-3'>
+                                <p className='text-lg font-semibold mb-2'>Notifications</p>
+                                <div className='max-h-48 overflow-y-auto'>
+                                    <div className='py-2 border-b border-gray-200'>
+                                        <p className='text-sm text-gray-700'>You have new messages.</p>
+                                    </div>
+                                    <div className='py-2 border-b border-gray-200'>
+                                        <p className='text-sm text-gray-700'>You have 5 appointments.</p>
+                                    </div>
+                                    <div className='py-2 border-b border-gray-200'>
+                                        <p className='text-sm text-gray-700'>Don't forget your upcoming tasks!</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    )}
+                </div>
+                <div>
+                    {isLoggedIn ? (
+                        <button
+                            onClick={handleLogout}
+                            className='px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600'
+                        >
+                            Logout
+                        </button>
+                    ) : (
+                        <button
+                            onClick={handleLogin}
+                            className='px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600'
+                        >
+                            Login
+                        </button>
                     )}
                 </div>
             </div>

@@ -32,7 +32,7 @@ const PatientNavbar: React.FC = () => {
                 {/* Logo */}
                 <div className="flex items-center">
                     <Link to="/home" className="flex items-center">
-                        <img src={logo} alt="logo" className="w-[220px] h-[30px] sm:w-30 sm:h-14" />
+                        <img src={logo} alt="logo" className="w-[200px] h-[20px] sm:w-30 sm:h-14" />
                     </Link>
                 </div>
 

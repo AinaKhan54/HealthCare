@@ -5,18 +5,18 @@ import Image from '../../../assets/Images/surgery.jpg';
 import DoctorImage from "../../../assets/Images/doctor4.jpg";
 
 const departments = [
-  'Accident & Emergency',
-  'General Medicine',
-  'Intensive Care Unit',
-  'Surgical Department',
-  'Internal Medicine',
-  'Pediatrics',
-  'Obstetrics & Gynecology',
-  'Radiology',
-  'Pathology',
-  'Pharmacy',
-  'Anesthesiology',
-  'Dermatology'
+  { name: 'Accident & Emergency', link: '/accident-emergency' },
+  { name: 'General Medicine', link: '/general-medicine' },
+  { name: 'Intensive Care Unit', link: '/intensive-care-unit' },
+  { name: 'Surgical Department', link: '/surgical-department' },
+  { name: 'Internal Medicine', link: '/internal-medicine' },
+  { name: 'Pediatrics', link: '/internal-medicine' },
+  { name: 'Obstetrics & Gynecology', link: '/obstetrics-gynecology' },
+  { name: 'Radiology', link: '/radiology' },
+  { name: 'Pathology', link: '/pathology' },
+  { name: 'Pharmacy', link: '/pharmacy' },
+  { name: 'Anesthesiology', link: '/critical-care&anesthesiology' },
+  { name: 'Dermatology', link: '/dermatology' },
 ];
 
 const GeneralSurgery: React.FC = () => {
@@ -26,8 +26,10 @@ const GeneralSurgery: React.FC = () => {
       <h1 className="text-3xl font-bold mt-6 text-purple-900 ml-20">Anesthesiology</h1>
       <div className="flex flex-col md:flex-row mt-4">
         {/* Left Side - Department Card */}
-        <div className="w-full md:w-1/3 p-4 hidden md:block">
-          <DepartmentCard departments={departments} />
+        <div className="hidden lg:block w-full lg:w-1/3 p-4 lg:ml-12">
+          <div className="overflow-x-auto">
+            <DepartmentCard departments={departments} />
+          </div>
         </div>
 
         {/* Right Side - Anesthesiology Content */}

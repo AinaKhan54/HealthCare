@@ -10,7 +10,7 @@ const appointmentSchema = z.object({
   email: z.string().email("Invalid email address"),
   mobileNumber: z.string().regex(/^\d{10}$/, "Mobile number must be 10 digits"),
   adharNo: z.string().regex(/^\d{12}$/, "Aadhar number must be 12 digits"),
-  gender: z.enum(["male", "female", "other"]),
+  gender: z.string().min(1,"Gender is required"),
   date: z.string().min(1, "Date is required"),
   time: z.string().min(1, "Time is required"),
   reason: z.string().min(10, "Reason must be at least 10 characters long"),
@@ -41,7 +41,7 @@ const MakeAppointment: React.FC = () => {
 
   const [formData, setFormData] = useState<Appointment>(initialFormData);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Record<string, string | null>>({});
   const [success, setSuccess] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -51,11 +51,11 @@ const MakeAppointment: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setError({});
     setSuccess(null);
 
     try {
-      // Validate form data using Zod
+      // Validate form data using Zod locally on frontend
       appointmentSchema.parse(formData);
 
       // Send form data to backend
@@ -66,10 +66,20 @@ const MakeAppointment: React.FC = () => {
       setFormData(initialFormData);
     } catch (err: any) {
       if (err instanceof z.ZodError) {
-        setError(err.errors[0]?.message); // Display first validation error
+        setError(err.errors.reduce((acc: any, error: any) => {
+          acc[error.path[0]] = error.message;
+          return acc;
+        }, {}));
+      } else if (err.response && err.response.data.errors) {
+        // Backend validation errors
+        const backendErrors = err.response.data.errors.reduce((acc: any, error: any) => {
+          acc[error.path] = error.message;
+          return acc;
+        }, {});
+        setError(backendErrors);
       } else {
         console.error(err);
-        setError('Failed to make the appointment. Please try again.');
+        setError({ general: 'Failed to make the appointment. Please try again.' });
       }
     } finally {
       setLoading(false);
@@ -81,7 +91,6 @@ const MakeAppointment: React.FC = () => {
       <PatientNavbar />
       <div className="flex-grow p-6 w-full max-w-2xl md:ml-[240px]">
         <h2 className="text-2xl font-bold text-purple-900 text-center mb-4">Make an Appointment</h2>
-        {error && <p className="text-red-600">{error}</p>}
         {success && <p className="text-green-600">{success}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -93,8 +102,8 @@ const MakeAppointment: React.FC = () => {
               value={formData.name}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-              required
             />
+            {error.name && <p className="text-red-600">{error.name}</p>}
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
@@ -105,8 +114,8 @@ const MakeAppointment: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-              required
             />
+            {error.email && <p className="text-red-600">{error.email}</p>}
           </div>
           <div>
             <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">Mobile Number</label>
@@ -117,8 +126,8 @@ const MakeAppointment: React.FC = () => {
               value={formData.mobileNumber}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-              required
             />
+            {error.mobileNumber && <p className="text-red-600">{error.mobileNumber}</p>}
           </div>
           <div>
             <label htmlFor="adharNo" className="block text-sm font-medium text-gray-700">Aadhar No</label>
@@ -129,8 +138,8 @@ const MakeAppointment: React.FC = () => {
               value={formData.adharNo}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-              required
             />
+            {error.adharNo && <p className="text-red-600">{error.adharNo}</p>}
           </div>
           <div>
             <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
@@ -140,13 +149,13 @@ const MakeAppointment: React.FC = () => {
               value={formData.gender}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-              required
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
+            {error.gender && <p className="text-red-600">{error.gender}</p>}
           </div>
           <div>
             <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
@@ -157,8 +166,8 @@ const MakeAppointment: React.FC = () => {
               value={formData.date}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-              required
             />
+            {error.date && <p className="text-red-600">{error.date}</p>}
           </div>
           <div>
             <label htmlFor="time" className="block text-sm font-medium text-gray-700">Time</label>
@@ -169,26 +178,27 @@ const MakeAppointment: React.FC = () => {
               value={formData.time}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-              required
             />
+            {error.time && <p className="text-red-600">{error.time}</p>}
           </div>
           <div>
-            <label htmlFor="reason" className="block text-sm font-medium text-gray-700">Reason</label>
+            <label htmlFor="reason" className="block text-sm font-medium text-gray-700">Reason for Appointment</label>
             <textarea
               id="reason"
               name="reason"
               value={formData.reason}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-              required
             />
+            {error.reason && <p className="text-red-600">{error.reason}</p>}
           </div>
+          {error.general && <p className="text-red-600">{error.general}</p>}
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white py-2 px-4 rounded-md shadow-sm focus:outline-none hover:bg-purple-700"
             disabled={loading}
+            className="w-full bg-purple-600 text-white p-2 rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
-            {loading ? 'Submitting...' : 'Submit'}
+            {loading ? 'Submitting...' : 'Make Appointment'}
           </button>
         </form>
       </div>
@@ -200,3 +210,4 @@ const MakeAppointment: React.FC = () => {
 };
 
 export default MakeAppointment;
+ 

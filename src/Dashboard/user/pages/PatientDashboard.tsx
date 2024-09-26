@@ -42,15 +42,6 @@ const PatientDashboard: React.FC = () => {
                         </p>
                     </div>
 
-                {/* Button */}
-                <div className="absolute bottom-4 right-2 md:right-[244px] top-1/2 animate-slide-in-down">
-                    <button
-                        className="bg-purple-800 text-white font-bold py-1 px-3 rounded-lg transition-transform duration-300 hover:scale-105"
-                        onClick={() => handleNavigation('/make-appointment')}
-                    >
-                        Book Appointment
-                    </button>
-                </div>
             </div>
 
             {/* DocImage and Text Content */}
@@ -77,28 +68,28 @@ const PatientDashboard: React.FC = () => {
                     <div className="w-full md:w-72 p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col justify-between mt-4 md:mt-0 md:ml-20">
                         <h3
                             className="flex items-center justify-between p-1 bg-purple-100 rounded hover:bg-purple-300 transition-colors duration-200 cursor-pointer"
-                            onClick={() => handleNavigation('/MakeAppointment')}
+                            onClick={() => handleNavigation('/make-appointment')}
                         >
                             Request an Appointment
                             <FaArrowRight className="text-purple-500 ml-1" />
                         </h3>
                         <h3
                             className="flex items-center justify-between p-1 bg-purple-100 rounded hover:bg-purple-300 transition-colors duration-200 cursor-pointer mt-4"
-                            onClick={() => handleNavigation('/Patient/MedicalExpert')}
+                            onClick={() => handleNavigation('/medical-expert')}
                         >
                             Find Doctor
                             <FaArrowRight className="text-purple-500 ml-1" />
                         </h3>
                         <h3
                             className="flex items-center justify-between p-1 bg-purple-100 rounded hover:bg-purple-300 transition-colors duration-200 cursor-pointer mt-4"
-                            onClick={() => handleNavigation('/Patient/ContactUs')}
+                            onClick={() => handleNavigation('/ContactUs')}
                         >
                             Contact Us
                             <FaArrowRight className="text-purple-500 ml-1" />
                         </h3>
                         <h3
                             className="flex items-center justify-between p-1 bg-purple-100 rounded hover:bg-purple-300 transition-colors duration-200 cursor-pointer mt-4"
-                            onClick={() => handleNavigation('/HealthBlog')}
+                            onClick={() => handleNavigation('/health-blog')}
                         >
                             Health Blog
                             <FaArrowRight className="text-purple-500 ml-1" />

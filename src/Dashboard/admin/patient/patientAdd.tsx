@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { z } from 'zod';
 import { createPatient } from '../../../utils/userApi';
+import { toast, Toaster } from 'react-hot-toast'; // Importing toast
 
 // Zod validation schema
 const patientSchema = z.object({
@@ -13,10 +14,10 @@ const patientSchema = z.object({
     errorMap: () => ({ message: 'Select a valid gender' }),
   }),
   address: z.string().min(1, 'Address is required'),
-  medical: z.string().min(1, 'medical history is required'),
+  medical: z.string().min(1, 'Medical is required')
 });
 
- export interface PatientsFormData {
+export interface PatientsFormData {
   firstname: string;
   lastname: string;
   phone: string;
@@ -41,17 +42,16 @@ const PatientRegistrationForm: React.FC = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-// Handle change
-const handleChange = (
-  e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-): void => {
-  const { name, value } = e.target;
-  setFormData((prevFormData) => ({
-    ...prevFormData,
-    [name]: value,
-  }));
-};
-
+  // Handle change
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ): void => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -60,17 +60,6 @@ const handleChange = (
     try {
       // Validate form data
       patientSchema.parse(formData);
-
-      // Prepare FormData for submission
-      // const formDataToSend = new FormData();
-      // formDataToSend.append('firstname', formData.firstname);
-      // formDataToSend.append('lastname', formData.lastname);
-      // formDataToSend.append('phone', formData.phone);
-      // formDataToSend.append('email', formData.email);
-      // formDataToSend.append('dob', formData.dob);
-      // formDataToSend.append('gender', formData.gender);
-      // formDataToSend.append('address', formData.address);
-      // formDataToSend.append('medicalHistory', formData.medicalHistory);
 
       // API call to create patient
       await createPatient(formData);
@@ -87,7 +76,8 @@ const handleChange = (
         medical: '',
       });
 
-      alert('Patient registration successful!');
+      // Show success toast
+      toast.success('Patient registration successful!'); // Success toast
     } catch (err) {
       if (err instanceof z.ZodError) {
         const formattedErrors: Record<string, string> = {};
@@ -104,11 +94,11 @@ const handleChange = (
 
   return (
     <div className='p-2 pl-14 md:pl-20 bg-gray-100'>
+      <Toaster /> {/* Toaster component for notifications */}
       <div className="max-w-xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-purple-900 text-center">Patient Registration Form</h2>
         <div className="p-6 bg-white shadow-md rounded-lg">
           <form onSubmit={handleSubmit}>
-            {/* Firstname */}
             <div className="mb-4">
               <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">Firstname</label>
               <input
@@ -122,7 +112,6 @@ const handleChange = (
               {errors['firstname'] && <p className="text-red-600">{errors['firstname']}</p>}
             </div>
 
-            {/* Lastname */}
             <div className="mb-4">
               <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">Lastname</label>
               <input
@@ -133,10 +122,9 @@ const handleChange = (
                 onChange={handleChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               />
-                          {errors['lastname'] && <p className="text-red-600">{errors['lastname']}</p>}
+              {errors['lastname'] && <p className="text-red-600">{errors['lastname']}</p>}
             </div>
 
-            {/* Phone */}
             <div className="mb-4">
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
               <input
@@ -150,7 +138,6 @@ const handleChange = (
               {errors['phone'] && <p className="text-red-600">{errors['phone']}</p>}
             </div>
 
-            {/* Email */}
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
               <input
@@ -164,7 +151,6 @@ const handleChange = (
               {errors['email'] && <p className="text-red-600">{errors['email']}</p>}
             </div>
 
-            {/* Date of Birth */}
             <div className="mb-4">
               <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
               <input
@@ -178,7 +164,6 @@ const handleChange = (
               {errors['dob'] && <p className="text-red-600">{errors['dob']}</p>}
             </div>
 
-            {/* Gender */}
             <div className="mb-4">
               <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
               <select
@@ -195,7 +180,6 @@ const handleChange = (
               {errors['gender'] && <p className="text-red-600">{errors['gender']}</p>}
             </div>
 
-            {/* Address */}
             <div className="mb-4">
               <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
               <input
@@ -209,7 +193,6 @@ const handleChange = (
               {errors['address'] && <p className="text-red-600">{errors['address']}</p>}
             </div>
 
-            {/* Medical History */}
             <div className="mb-4">
               <label htmlFor="medical" className="block text-sm font-medium text-gray-700">Medical History</label>
               <textarea
@@ -220,6 +203,7 @@ const handleChange = (
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 rows={4}
               />
+              {errors['medical'] && <p className="text-red-600">{errors['medical']}</p>}
             </div>
 
             <button

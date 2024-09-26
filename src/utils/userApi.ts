@@ -99,7 +99,6 @@ export const sendMessage = async (name: string, email: string, message: string) 
     throw error;
   }
 };
-
 // Fetch Messages
 export const fetchMessages = async () => {
   try {
@@ -221,3 +220,4 @@ export const updatePatient = async (id: string, updatedPatient: FormData) => {
     throw error;
   }
 };
+

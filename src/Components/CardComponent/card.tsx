@@ -3,7 +3,7 @@ import React from 'react';
 // Define the props type
 interface CardProps {
   title: string;
-  content: string;
+  content: string | number;
 }
 
 const Card: React.FC<CardProps> = ({ title, content }) => {

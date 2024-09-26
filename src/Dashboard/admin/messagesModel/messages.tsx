@@ -11,6 +11,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Tooltip, TextField } from '@mui/material';
 import MessageModal from './messageModel';
+import { toast, Toaster } from 'react-hot-toast'; // Importing toast
 
 export interface MessageData {
   id: string;
@@ -41,6 +42,9 @@ const Messages: React.FC = () => {
     try {
       await deleteMessage(id);
       setRows(rows.filter(row => row.id !== id));
+      
+      // Show success toast for deletion
+      toast.success('Message deleted successfully!'); // Success toast
     } catch (error) {
       console.error('Error deleting message:', error);
     }
@@ -60,6 +64,9 @@ const Messages: React.FC = () => {
       await updateMessage(currentMessage!.id, updatedMessage);
       setRows(rows.map(row => (row.id === currentMessage!.id ? updatedMessage : row)));
       handleClose();
+      
+      // Show success toast for update
+      toast.success('Message updated successfully!'); // Success toast
     } catch (error) {
       console.error('Error updating message:', error);
     }
@@ -67,6 +74,7 @@ const Messages: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen p-10 ml-[250px]">
+      <Toaster /> {/* Toaster component for notifications */}
       <div className="flex justify-end mb-4">
         <TextField
           label="Search"
@@ -78,43 +86,42 @@ const Messages: React.FC = () => {
       </div>
       <TableContainer component={Paper}>
         <Table>
-        <TableHead>
-  <TableRow sx={{ backgroundColor: 'purple' }}>
-    <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1.1rem', fontFamily: 'Arial, sans-serif' }}>Name</TableCell>
-    <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1.1rem', fontFamily: 'Arial, sans-serif' }}>Email</TableCell>
-    <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1.1rem', fontFamily: 'Arial, sans-serif' }}>Message</TableCell>
-    <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1.1rem', fontFamily: 'Arial, sans-serif' }}>Actions</TableCell>
-  </TableRow>
-</TableHead>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: 'purple' }}>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px' }}>Name</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px' }}>Email</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px' }}>Message</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px' }}>Actions</TableCell>
+            </TableRow>
+          </TableHead>
 
           <TableBody>
-  {rows
-    .filter(row => row.name.toLowerCase().includes(searchQuery))
-    .map(row => (
-      <TableRow key={row.id} className="hover:bg-purple-300"> {/* Add hover class here */}
-        <TableCell>{row.name}</TableCell>
-        <TableCell>{row.email}</TableCell>
-        <TableCell>{row.message}</TableCell>
-        <TableCell>
-          <Tooltip title="Delete">
-            <DeleteOutlineIcon
-              onClick={() => handleDelete(row.id)}
-              className="cursor-pointer mr-2 transform transition-transform duration-200 hover:scale-110" // Add zoom effect here
-              sx={{ color: 'red' }} // Set the delete icon color to red
-            />
-          </Tooltip>
-          <Tooltip title="Edit">
-            <EditOutlinedIcon
-              onClick={() => handleEdit(row)}
-              className="cursor-pointer transform transition-transform duration-200 hover:scale-110" // Add zoom effect here
-              sx={{ color: 'blue' }} // Set the edit icon color to blue
-            />
-          </Tooltip>
-        </TableCell>
-      </TableRow>
-    ))}
-</TableBody>
-
+            {rows
+              .filter(row => row.name.toLowerCase().includes(searchQuery))
+              .map(row => (
+                <TableRow key={row.id} className="hover:bg-purple-100">
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.email}</TableCell>
+                  <TableCell>{row.message}</TableCell>
+                  <TableCell>
+                    <Tooltip title="Delete">
+                      <DeleteOutlineIcon
+                        onClick={() => handleDelete(row.id)}
+                        className="cursor-pointer mr-2 transform transition-transform duration-200 hover:scale-110"
+                        sx={{ color: 'red' }}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                      <EditOutlinedIcon
+                        onClick={() => handleEdit(row)}
+                        className="cursor-pointer transform transition-transform duration-200 hover:scale-110"
+                        sx={{ color: 'blue' }}
+                      />
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
 
         </Table>
       </TableContainer>

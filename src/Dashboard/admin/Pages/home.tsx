@@ -37,13 +37,47 @@ interface Doctor {
 }
 
 interface CardProps {
-  icon: React.ReactNode;
-  title: string;
+  icon?: React.ReactNode;
+  title?: React.ReactNode;
   content?: string;
   color: string;
   width: string;
   patients?: Patient[];
+  doctors?: Doctor[];
 }
+
+const Card: React.FC<CardProps> = ({ icon, title, content, color, width, patients }) => {
+  return (
+    <div className={`p-6 rounded-lg shadow-lg ${color} ${width} flex flex-col items-center`}>
+      <div className="bg-white/30 p-4 rounded-full flex items-center justify-center mb-4">
+        {icon}
+      </div>
+      <p className="text-lg font-medium text-gray-600 mb-2">{title}</p>
+      {content && <h2 className="text-4xl font-semibold text-gray-800">{content}</h2>}
+
+      {patients && (
+        <div className="w-full">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b-2 border-gray-200">
+                <th className="py-2">Name</th>
+                <th className="py-2">Phone</th>
+              </tr>
+            </thead>
+            <tbody>
+              {patients.map((patient, index) => (
+                <tr key={index} className="border-b border-gray-200">
+                  <td className="py-2">{`${patient.firstname} ${patient.lastname}`}</td>
+                  <td className="py-2">{patient.phone}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Home: React.FC = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -72,6 +106,14 @@ const Home: React.FC = () => {
     fetchAppointments();
   }, []);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   const data = [
     { month: 'Jan', health: 400, death: 240 },
     { month: 'Feb', health: 300, death: 139 },
@@ -95,39 +137,40 @@ const Home: React.FC = () => {
   ];
 
   return (
-    <div className="p-12 bg-gray-100 ml-40 mt-[-80px] mt-8">
-      <div className="p-12 ml-12 flex justify-between w-full mb-8">
+    <div className="p-12 bg-gray-100 ml-40 mt-[-60px]">
+      <div className="p-12 ml-12 flex justify-between w-full gap-4">
         <Card 
           icon={<PeopleIcon className="text-white text-5xl" />} 
-          title="Today's Patients Visitors" 
-          content="5600" 
+          title="Total Admit Patients" 
+          content={patients.length.toString()} 
           color="bg-[#E5D1FA]" 
           width="w-64"
         />
         <Card 
           icon={<FemaleIcon className="text-white text-5xl" />} 
-          title="Appointments" 
-          content="3450" 
+          title="Total Doctors" 
+          content={doctors.length.toString()}  
           color="bg-[#FAD1E6]" 
           width="w-64"
         />
         <Card 
           icon={<PeopleIcon className="text-white text-5xl" />} 
-          title="Total Admit Patients" 
-          content="3500" 
+          title="Total Appointments" 
+          content={appointments.length.toString()}
           color="bg-[#fbb3b3]" 
           width="w-64"
         />
         <Card 
           icon={<MedicalServicesIcon className="text-white text-5xl" />} 
-          title="Today's Profit" 
-          content="95k" 
+          title="Total Messages" 
+          content="8"
           color="bg-[#9CC2F4]" 
           width="w-64"
         />
       </div>
 
-      <div className="flex justify-between gap-4 ml-20 mb-8">
+      <div className="flex justify-between ml-20 mb-8">
+        {/* Patients Overview Card */}
         <div className="flex-1 bg-white p-5 rounded-lg shadow-lg">
           <h2 className="text-xl font-semibold mb-4">Patients Overview</h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -142,19 +185,24 @@ const Home: React.FC = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-        
-        <Card 
-        
-          icon={<MedicalServicesIcon className="text-white text-5xl"  />} 
-          title="Recent Patients Details" 
-          patients={patients} 
-          color="bg-white" 
-          width="w-80"
-        />
-        
+
+        {/* Recent Patients Details Card */}
+        <div className="ml-4"> {/* Adjust margin as needed */}
+          <Card 
+            icon={<PeopleIcon className="text-white text-5xl" />} 
+            title={
+              <div className="text-2xl" style={{ marginTop: 'px' }}>
+                Recent Patients Details
+              </div>
+            } 
+            patients={patients.slice(0, 5)} 
+            color="bg-[#e8ddeb]"  
+            width="w-80" 
+          />
+        </div>
       </div>
 
-      <div className="flex gap-1 ml-20 mb-3">
+      <div className="flex gap-1 ml-20 mb-8">
         <LongCard 
           icon={<MedicalServicesIcon className="text-white text-2xl" />} 
           title="Our Specialized Team" 
@@ -168,74 +216,40 @@ const Home: React.FC = () => {
       </div>
 
       <div className="bg-white p-5 ml-20 rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Today's Patient Appointments</h2>
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-gray-200 text-gray-700">
-              <th className="py-2 px-4 border">Patient Name</th>
-              <th className="py-2 px-4 border">Mobile</th>
-              <th className="py-2 px-4 border">Aadhar Number</th>
-              <th className="py-2 px-4 border">Gender</th>
-              <th className="py-2 px-4 border">Date</th>
-              <th className="py-2 px-4 border">Time</th>
-              <th className="py-2 px-4 border">Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            {appointments[0] && (
-              <tr className="border-t">
-                <td className="py-2 px-4">{appointments[0].name}</td>
-                <td className="py-2 px-4">{appointments[0].email}</td>
-                <td className="py-2 px-4">{appointments[0].mobileNumber}</td>
-                <td className="py-2 px-4">{appointments[0].gender}</td>
-                <td className="py-2 px-4">{appointments[0].date}</td>
-                <td className="py-2 px-4">{appointments[0].time}</td>
-                <td className="py-2 px-4">{appointments[0].reason}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
-
-const Card: React.FC<CardProps> = ({ icon, title, content, color, width, patients }) => {
-  return (
-    <div className={`p-5 rounded-lg shadow-lg ${color} ${width}`}>
-      <div className="flex items-center mb-4">
-        <div className="bg-white/30 p-2 rounded-full flex items-center justify-center">
-          {icon}
-        </div>
-        <div className="ml-4 text-gray-800 mb-2">
-          <p className="text-lg font-semibold m-0">{title}</p>
-          {content && <h2 className="text-3xl font-semibold m-0">{content}</h2>}
-        </div>
-      </div>
-
-      {patients && (
-        <div className="w-full">
-          <h3 className="text-lg font-weight-300 mb-5"></h3>
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b-2 border-gray-200">
-                <th className="py-2">Name</th>
-                <th className="py-2 text-purple">Email</th>
-                <th className="py-2">Phone</th>
-              </tr>
-            </thead>
-            <tbody>
-              {patients.map((patient, index) => (
-                <tr key={index} className="border-b">
-                  <td className="py-2">{patient.firstname}</td>
-                  <td className="py-2">{patient.email}</td>
-                  <td className="py-2">{patient.phone}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+  <h2 className="text-xl font-semibold mb-4">Today's Patient Appointments</h2>
+  <table className="w-full text-left border-collapse">
+    <thead>
+      <tr className="bg-gray-200 text-gray-700">
+        <th className="py-2 px-4 border">Patient Name</th>
+        <th className="py-2 px-4 border">Mobile</th>
+        <th className="py-2 px-4 border">Aadhar Number</th>
+        <th className="py-2 px-4 border">Gender</th>
+        <th className="py-2 px-4 border">Date</th>
+        <th className="py-2 px-4 border">Time</th>
+        <th className="py-2 px-4 border">Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+      {appointments.length > 0 ? (
+        <tr key={0} className="border-b border-gray-200">
+          <td className="py-2 px-4">{appointments[0].name}</td>
+          <td className="py-2 px-4">{appointments[0].mobileNumber}</td>
+          <td className="py-2 px-4">{appointments[0].adharNo}</td>
+          <td className="py-2 px-4">{appointments[0].gender}</td>
+          <td className="py-2 px-4">{formatDate(appointments[0].date)}</td>
+          <td className="py-2 px-4">{appointments[0].time}</td>
+          <td className="py-2 px-4">{appointments[0].reason}</td>
+        </tr>
+      ) : (
+        <tr>
+          <td colSpan={7} className="py-2 px-4 text-center">No appointments available.</td>
+        </tr>
       )}
+    </tbody>
+  </table>
+</div>
+
+
     </div>
   );
 };

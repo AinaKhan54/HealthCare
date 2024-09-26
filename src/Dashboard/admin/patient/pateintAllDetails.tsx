@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Toaster, toast } from 'react-hot-toast'; // Importing toast
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,17 +9,17 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Tooltip, TextField } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import axiosInstance from '../../../auth/axiosInstance';
 
 // Define types for patient data
 interface Patient {
-  _id: string; // Added _id field for API operations
+  _id: string;
   firstname: string;
   lastname: string;
   phone: string;
@@ -30,10 +31,10 @@ interface Patient {
 }
 
 const AllPatientDetails: React.FC = () => {
-  const [patients, setPatients] = useState<Patient[]>([]); // State for patients
+  const [patients, setPatients] = useState<Patient[]>([]);
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState<Patient>({
-    _id: '', // Added _id field
+    _id: '',
     firstname: '',
     lastname: '',
     email: '',
@@ -44,14 +45,15 @@ const AllPatientDetails: React.FC = () => {
     medical: '',
   });
   const [searchQuery, setSearchQuery] = useState('');
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [patientToDelete, setPatientToDelete] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch patients data from API
     axiosInstance.get('/patients')
       .then(response => {
         if (response.data && Array.isArray(response.data)) {
           const transformedPatients = response.data.map((patient: any) => ({
-            _id: patient._id, // Ensure the _id is set for edit/delete operations
+            _id: patient._id,
             firstname: patient.firstname,
             lastname: patient.lastname,
             email: patient.email,
@@ -67,7 +69,7 @@ const AllPatientDetails: React.FC = () => {
         }
       })
       .catch(error => {
-        console.error('There was an error fetching the patient data!', error);
+        console.error('Error fetching the patient data!', error);
       });
   }, []);
 
@@ -80,31 +82,44 @@ const AllPatientDetails: React.FC = () => {
     setOpen(false);
   };
 
-  const handleSave = () => {
-    // Send PUT request to update the patient data
-    axiosInstance.put(`/patients/${editData._id}`, editData)
-      .then(response => {
-        const updatedPatients = patients.map(patient => 
-          patient._id === editData._id ? { ...editData } : patient
-        );
-        setPatients(updatedPatients);
-        setOpen(false);
-      })
-      .catch(error => {
-        console.error('There was an error updating the patient data!', error);
-      });
+  const handleSave = async () => {
+    try {
+      await axiosInstance.put(`/patients/${editData._id}`, editData);
+      const updatedPatients = patients.map(patient => 
+        patient._id === editData._id ? { ...editData } : patient
+      );
+      setPatients(updatedPatients);
+      toast.success('Patient information updated successfully!'); // Success toast
+    } catch (error) {
+      console.error('Error updating patient data!', error);
+      toast.error('Error updating patient information.'); // Error toast
+    } finally {
+      setOpen(false);
+    }
   };
 
-  const handleDelete = (id: string) => {
-    // Send DELETE request to remove the patient
-    axiosInstance.delete(`/patients/${id}`)
-      .then(() => {
-        const filteredPatients = patients.filter(patient => patient._id !== id);
-        setPatients(filteredPatients);
-      })
-      .catch(error => {
-        console.error('There was an error deleting the patient!', error);
-      });
+  const confirmDelete = (id: string) => {
+    setPatientToDelete(id);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (patientToDelete) {
+      axiosInstance.delete(`/patients/${patientToDelete}`)
+        .then(() => {
+          const filteredPatients = patients.filter(patient => patient._id !== patientToDelete);
+          setPatients(filteredPatients);
+          toast.success('Patient deleted successfully!'); // Success toast
+        })
+        .catch(error => {
+          console.error('Error deleting the patient!', error);
+          toast.error('Error deleting the patient.'); // Error toast
+        })
+        .finally(() => {
+          setConfirmOpen(false);
+          setPatientToDelete(null);
+        });
+    }
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,6 +139,7 @@ const AllPatientDetails: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen ml-[250px] p-10 bg-gray-300">
+      <Toaster /> {/* Toaster component for notifications */}
       <div className="flex justify-end mb-4">
         <TextField
           label="Search"
@@ -133,23 +149,47 @@ const AllPatientDetails: React.FC = () => {
           className="w-full max-w-xs"
         />
       </div>
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: 'purple' }}>
-              <TableCell sx={{ color: 'white', width: '15%' }}>Name</TableCell>
-              <TableCell sx={{ color: 'white', width: '20%' }}>Email</TableCell>
-              <TableCell sx={{ color: 'white', width: '15%' }}>Mobile Number</TableCell>
-              <TableCell sx={{ color: 'white', width: '10%' }}>DOB</TableCell>
-              <TableCell sx={{ color: 'white', width: '10%' }}>Gender</TableCell>
-              <TableCell sx={{ color: 'white', width: '15%' }}>Address</TableCell>
-              <TableCell sx={{ color: 'white', width: '15%' }}>Medical History</TableCell>
-              <TableCell sx={{ color: 'white', width: '10%' }}>Actions</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px', textAlign: 'center' }}>
+                Name
+              </TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px', textAlign: 'center' }}>
+                Email
+              </TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px', textAlign: 'center' }}>
+                Mobile Number
+              </TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px', textAlign: 'center' }}>
+                DOB
+              </TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px', textAlign: 'center' }}>
+                Gender
+              </TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px', textAlign: 'center' }}>
+                Address
+              </TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px', textAlign: 'center' }}>
+                Medical History
+              </TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px', textAlign: 'center' }}>
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {filteredPatients.map((patient, index) => (
-              <TableRow key={index}>
+              <TableRow
+                key={index}
+                sx={{
+                  '&:hover': { backgroundColor: '#f5f5f5' },
+                  '& td': { textAlign: 'center', padding: '12px' },
+                }}
+              >
                 <TableCell>{`${patient.firstname} ${patient.lastname}`}</TableCell>
                 <TableCell>{patient.email}</TableCell>
                 <TableCell>{patient.phone}</TableCell>
@@ -158,14 +198,20 @@ const AllPatientDetails: React.FC = () => {
                 <TableCell>{patient.address}</TableCell>
                 <TableCell>{patient.medical}</TableCell>
                 <TableCell>
-                  <EditOutlinedIcon
-                    onClick={() => handleClickOpen(patient)}
-                    style={{ cursor: 'pointer', marginRight: '10px' }}
-                  />
-                  <DeleteOutlineIcon
-                    onClick={() => handleDelete(patient._id)}
-                    style={{ cursor: 'pointer' }}
-                  />
+                  <Tooltip title="Delete">
+                    <DeleteOutlineIcon
+                      onClick={() => confirmDelete(patient._id)}
+                      className="cursor-pointer mr-2 transform transition-transform duration-200 hover:scale-110"
+                      sx={{ color: 'red' }}
+                    />
+                  </Tooltip>
+                  <Tooltip title="Edit">
+                    <EditOutlinedIcon
+                      onClick={() => handleClickOpen(patient)}
+                      className="cursor-pointer transform transition-transform duration-200 hover:scale-110"
+                      sx={{ color: 'blue' }}
+                    />
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
@@ -241,8 +287,28 @@ const AllPatientDetails: React.FC = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button onClick={handleClose} variant="contained" sx={{ backgroundColor: '#FF4C4C', color: 'white' }} >
+              Cancel
+            </Button>
+            <Button onClick={handleSave} variant="contained" sx={{ backgroundColor: '#4CAF50', color: 'white' }}> 
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Confirmation Dialog */}
+        <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
+          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogContent>
+            <p>Are you sure you want to delete this patient?</p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setConfirmOpen(false)} variant="contained" sx={{ backgroundColor: '#FF4C4C', color: 'white' }}>
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmDelete} variant="contained" sx={{ backgroundColor: '#4CAF50', color: 'white' }}>
+              Delete
+            </Button>
           </DialogActions>
         </Dialog>
       </TableContainer>

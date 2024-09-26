@@ -5,18 +5,18 @@ import Image from "../../../assets/Images/emergency.jpg";
 import DoctorImage from "../../../assets/Images/doctor7.jpg";
 
 const departments = [
-  'Accident & Emergency',
-  'General Medicine',
-  'Intensive Care Unit',
-  'Surgical Department',
-  'Internal Medicine',
-  'Pediatrics',
-  'Obstetrics & Gynecology',
-  'Radiology',
-  'Pathology',
-  'Pharmacy',
-  'Anesthesiology',
-  'Dermatology'
+  { name: 'Accident & Emergency', link: '/accident-emergency' },
+  { name: 'General Medicine', link: '/general-medicine' },
+  { name: 'Intensive Care Unit', link: '/intensive-care-unit' },
+  { name: 'Surgical Department', link: '/surgical-department' },
+  { name: 'Internal Medicine', link: '/internal-medicine' },
+  { name: 'Pediatrics', link: '/internal-medicine' },
+  { name: 'Obstetrics & Gynecology', link: '/obstetrics-gynecology' },
+  { name: 'Radiology', link: '/radiology' },
+  { name: 'Pathology', link: '/pathology' },
+  { name: 'Pharmacy', link: '/pharmacy' },
+  { name: 'Anesthesiology', link: '/critical-care&anesthesiology' },
+  { name: 'Dermatology', link: '/dermatology' },
 ];
 
 const AccidentEmergency: React.FC = () => {

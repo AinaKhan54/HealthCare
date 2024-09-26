@@ -56,9 +56,13 @@ const MessageModal: React.FC<MessageModalProps> = ({ open, onClose, message, onU
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">Cancel</Button>
-        <Button onClick={handleUpdate} color="primary">Update</Button>
-      </DialogActions>
+            <Button onClick={onClose} variant="contained" sx={{ backgroundColor: '#FF4C4C', color: 'white' }}>
+              Cancel
+            </Button>
+            <Button onClick={handleUpdate} variant="contained" sx={{ backgroundColor: '#4CAF50', color: 'white' }}>
+              Save
+            </Button>
+          </DialogActions>
     </Dialog>
   );
 };
